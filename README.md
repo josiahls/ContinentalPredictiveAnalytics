@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Continental Predictive Analytics Project</title>
+    
 </head>
 <body>
-
+<title>Continental Predictive Analytics Project</title>
 
 <h1>Dev Setup</h1>
 <h3>Tools</h3>
