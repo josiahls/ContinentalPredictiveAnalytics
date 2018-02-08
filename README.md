@@ -5,7 +5,7 @@
     
 </head>
 <body>
-<title>Continental Predictive Analytics Project</title>
+<h1>Continental Predictive Analytics Project</title>
 
 <h1>Dev Setup</h1>
 <h3>Tools</h3>
