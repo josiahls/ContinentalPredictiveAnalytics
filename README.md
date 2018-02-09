@@ -19,6 +19,7 @@
 <ul>
     <li>
         If using windows, use cmder and nav to Anaconda3/Scripts/pip
+        <a>https://plot.ly/dash/getting-started#installation</a>
         pip install dash  # The core dash backend
         pip install dash-renderer # The dash front-end
         pip install dash-html-components # HTML components
@@ -26,6 +27,10 @@
         pip install plotly --upgrade  # Latest Plotly graphing library
     </li>
 </ul>
+
+<p>
+hi
+</p>
 
 </body>
 </html>
