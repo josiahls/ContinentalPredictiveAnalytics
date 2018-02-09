@@ -21,6 +21,7 @@ app.layout = html.Div(children=[
             ],
             'layout': {
 
+
                 'title': 'Josiah\'s and Gana\'s Dash Data Visualization'
 
             }
