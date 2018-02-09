@@ -1,7 +1,7 @@
 import unittest
 
 
-class ObjectTest(unittest.TestCase):
+class test_ObjectForTesting(unittest.TestCase):
     def test_object_test_adder(self):
         print("Startinging")
         from ObjectForTesting import ObjectForTesting

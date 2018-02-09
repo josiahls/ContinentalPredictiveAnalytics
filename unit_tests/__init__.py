@@ -1,1 +1,1 @@
-from .ObjectTest import ObjectTest
+from .test_ObjectForTesting import test_ObjectForTesting
