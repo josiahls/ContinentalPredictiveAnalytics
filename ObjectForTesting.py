@@ -11,7 +11,7 @@ class ObjectForTesting:
         :param j:
         :return:
         """
-        return i + j
+        return i * j
 '''
 This function will cause travis to indicate failure on pull
     def adder(self, i, j):
