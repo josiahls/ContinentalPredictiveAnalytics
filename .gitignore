@@ -17,6 +17,7 @@
 .idea/**/dynamic.xml
 .idea/**/uiDesigner.xml
 .idea/**/vcs.xml
+.idea/**/misc.xml
 
 # Gradle:
 .idea/**/gradle.xml
@@ -51,5 +52,5 @@ com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 fabric.properties
-.gitignore
-.idea/workspace.xml
+
+

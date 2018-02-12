@@ -12,3 +12,4 @@ class test_ObjectForTesting(unittest.TestCase):
         self.assertEqual(k, 3, 'The numbers are not adding properly')
         k = m.adder(2, 2)
         self.assertEqual(k, 4, 'The numbers are not adding properly')
+
