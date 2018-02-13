@@ -1,1 +1,2 @@
 from .test_ObjectForTesting import test_ObjectForTesting
+from.test_gana_tester import  test_gana_tester
