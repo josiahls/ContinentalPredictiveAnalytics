@@ -2,12 +2,6 @@ language: python
 rvm:
   - 3.6
 
-  before_install:
- - sudo apt-get install -qq
- python3-dash
- python3-dash_core_components==0.13.0-rc4
- python3-dash_html_components
-
 virtualenv:
   system_site_packages: true
 
