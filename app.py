@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
+import importlib
+import os
+
 import dash
-from dash.dependencies import Input, Output, State
 import dash_core_components as dcc
 import dash_html_components as html
-import os
-import importlib
-from core import Module
-from util.utility import Utility
-from util.bcolors import bcolors as b
+from dash.dependencies import Input, Output
 
-from modules.basic_test_module.BasicTestModule import BasicTestModule as md
+from core import Module
+from util.bcolors import bcolors as b
+from util.utility import Utility
 
 LIST_OF_MODULE_INSTANCES = []
 
