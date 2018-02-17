@@ -48,7 +48,7 @@
         <li>
         pip install dash-html-components # HTML components
         <li>
-        pip install dash-core-components  # Supercharged components
+        pip install dash-core-components==0.13.0-rc4  # Supercharged components
         <li>
         pip install plotly --upgrade  # Latest Plotly graphing library
     </li>
