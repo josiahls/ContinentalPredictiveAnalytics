@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
-import importlib
-import os
-
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
-
+import importlib
+import os
 from core import Module
 from util.bcolors import bcolors as b
 from util.utility import Utility
