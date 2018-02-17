@@ -1,2 +1,3 @@
 from .test_ObjectForTesting import test_ObjectForTesting
 from .test_dash_application import test_dash_application
+from .test_gana_tester import  test_gana_tester
