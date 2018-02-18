@@ -3,7 +3,6 @@ import dash_core_components as dcc
 
 
 class BasicTestModule(Module):
-
     def __init__(self):
         super().__init__()
 
@@ -17,8 +16,17 @@ class BasicTestModule(Module):
                 ],
                 'layout': {
 
-                    'title': 'Josiah\'s and Gana\'s Dash Data Visualization'
+                    'title': 'Josiah\'s Dash Data Visualization'
 
                 }
             }
         )
+
+    def get_module_name(self):
+        return "Basic Tester!!"
+
+    def get_tab_value(self):
+        return "tab_basic"
+
+    def __str__(self):
+        return "hello"

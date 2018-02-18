@@ -1,2 +1,2 @@
-from util import Bcolors
-from util import Utility
+from util import bcolors
+from util import utility
