@@ -23,10 +23,10 @@ class DiversityModule(Module):
         )
 
     def get_module_name(self):
-        return "Basic Tester2!!"
+        return "Diversity"
 
     def get_tab_value(self):
-        return "tab_basic2"
+        return "tab_diversity"
 
     def __str__(self):
         return "hello"
