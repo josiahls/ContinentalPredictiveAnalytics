@@ -30,7 +30,7 @@
 <h3>Tools</h3>
 <ul>
     <li>Pycharm 2017.1.5</li>
-    <li><b>If using windows: </b> cmder</li>
+    <li><b>If using windows os: </b> cmder</li>
     <li>Python 3.6 (Anaconda3)</li>
     <li>Travis-ci yml needs to be present</li>
 </ul>

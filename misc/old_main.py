@@ -1193,11 +1193,11 @@ def filter_dataframe(TerminationData, Age_slider, Gender_selector, LeavingDate_s
     dff = TerminationData[(TerminationData['Age'] >= Age_slider[0])
                           & (TerminationData['Age'] <= Age_slider[1])
                           & ((TerminationData['Gender'] == Gender_selector) if Gender_selector != 'All' else (
-    TerminationData['Gender'].isin(['Female', 'Male'])))
+        TerminationData['Gender'].isin(['Female', 'Male'])))
                           & (TerminationData['Leaving date'] >= (
-    dt.timedelta(days=LeavingDate_slider[0]) + LeavingDate_min))
+        dt.timedelta(days=LeavingDate_slider[0]) + LeavingDate_min))
                           & (TerminationData['Leaving date'] <= (
-    dt.timedelta(days=LeavingDate_slider[1]) + LeavingDate_min))
+        dt.timedelta(days=LeavingDate_slider[1]) + LeavingDate_min))
                           & (TerminationData['Employee Subgroup'].isin(Esubgroup_dropdown))
                           ]
 
@@ -1209,7 +1209,7 @@ def filter_dataframe_master(Data, Age_slider, Gender_selector, Esubgroup_selecto
     dff = Data[(Data['Age'] >= Age_slider[0])
                & (Data['Age'] <= Age_slider[1])
                & ((Data['Gender'] == Gender_selector) if Gender_selector != 'All' else (
-    Data['Gender'].isin(['Female', 'Male'])))
+        Data['Gender'].isin(['Female', 'Male'])))
                & (Data['Employee Subgroup'].isin(Esubgroup_dropdown))
                ]
 
@@ -1286,7 +1286,7 @@ def make_main_figure(Age_slider, Gender_selector, LeavingDate_slider,
             lon=dfff['Longitude'],
             lat=dfff['Latitude'],
             text=dfff['Personnel Area - City'].iloc[0] + ':' + str(dfff.shape[0]) + ',' + '%.2f' % (
-            dfff.shape[0] / dff.shape[0] * 100) + '% ',  # add state name
+                dfff.shape[0] / dff.shape[0] * 100) + '% ',  # add state name
 
             customdata=dfff['Location Name'],
             mode='markers',
@@ -1296,12 +1296,12 @@ def make_main_figure(Age_slider, Gender_selector, LeavingDate_slider,
             showlegend=False,
             hoverinfo='text',
             hovertext=dfff['Personnel Area - City'].iloc[0] + ':' + str(dfff.shape[0]) + ',' + '%.2f' % (
-            dfff.shape[0] / dff.shape[0] * 100) + '%',
+                dfff.shape[0] / dff.shape[0] * 100) + '%',
             ##            geo = 'geo',
 
             marker=dict(
                 size=math.sqrt((dfff.shape[0] - minTerminationLocationcount) / (
-                maxTerminationLocationcount - minTerminationLocationcount)) * 50,
+                    maxTerminationLocationcount - minTerminationLocationcount)) * 50,
                 # ***********choose vs what,  plot v.s. master data
 
                 opacity=0.3,
