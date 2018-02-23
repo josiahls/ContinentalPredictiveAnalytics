@@ -29,7 +29,7 @@ class JosiahCSVParser(object):
 
         self.desired_columns = {'UNCC_Termination pre 2017': [
             'Personnel No.',
-            'Job',
+            'Job Title',
             'Employee Group',
             'Employee Subgroup',
             'Gender Key',
@@ -38,8 +38,7 @@ class JosiahCSVParser(object):
             'Reason for action'
         ], 'UNCC_HR Master Data active employees': [
             'Personnel Number',
-            'Job',
-            'Position',
+            'Job Title',
             'Employee Group',
             'Employee Subgroup',
             'Gender Key',
@@ -52,14 +51,18 @@ class JosiahCSVParser(object):
             'Employee Subgroup',
             'Position Title'
         ]}
+
         self.columns_to_rename = {
             'UNCC_Termination pre 2017': [{}
                                           ],
             'UNCC_HR Master Data active employees': [
+                {'Employee Subgroup': 'Employee Pay Group'},
                 {'Personnel Number': 'Personnel No.'}
             ],
             'UNCC My Success': [
-                {'Employee Id': 'Personnel No.'}
+                {'Employee Subgroup': 'Employee Pay Group'},
+                {'Employee Id': 'Personnel No.'},
+                {'Gender': 'Gender Key'},
             ]}
 
         self.master_csv = {}
@@ -78,30 +81,40 @@ class JosiahCSVParser(object):
             ut.context("Loaded data sheets: " + key)
             # Drop Columns that are not important
 
-    def generate_CSV(self, show_limit=5):
+    def generate_CSV(self, show_limit=40):
+        # For each csv file
         for label in self.master_csv:
             data_frame = pd.DataFrame(self.master_csv[label])
-            # ut.context("Showing dataframe before editing \n" + data_frame.head(show_limit).to_string())
-            # Drop columns that we dont want
-            # ut.context(str(len(data_frame)))
+            # Drop the columns specified in desired_columns
             for key in data_frame:
                 if key not in self.desired_columns[label]:
                     data_frame.drop(labels=key, axis=1, inplace=True)
-            # ut.context("Showing dataframe after key drop \n" + data_frame.head(show_limit).to_string())
-            # ut.context("\n")
 
-            # Show Unique Values
-            # for key in data_frame:
-            #     ut.context("Show value occupancies: " + key + ": " + str(data_frame[key].unique()))
-
+            # Rename the columns specified in columns_to_rename
             if self.columns_to_rename[label]:
                 for i in range(0, len(self.columns_to_rename[label])):
                     data_frame.rename(columns=self.columns_to_rename[label][i], inplace=True)
 
-            ut.context("Showing dataframe after column rename fixes \n" + data_frame.head(show_limit).to_string())
+            self.master_csv[label] = data_frame
+            # ut.context("Showing data frame after column rename fixes \n" + data_frame.head(show_limit).to_string())
 
+        # Find min len so that a merge can happen
+        minimum = min(len(self.master_csv[label]) for label in self.master_csv)
+
+        # Merge All CSVs into one set
+        self.master_csv['local'] = pd.DataFrame()
+        for i, label in enumerate(self.master_csv):
+            # ut.context("minimum is: " + str(minimum))
+            if i != 0 and label != 'local':
+                self.master_csv['local'] = pd.DataFrame(self.master_csv['local']).merge(
+                    pd.DataFrame(self.master_csv[label].head(minimum - 1)), on='Personnel No.', sort=True, how='outer')
+            elif i == 0:
+                self.master_csv['local'] = pd.DataFrame(self.master_csv[label].head(minimum - 1))
+
+        ut.context("Loaded data sheets: " + self.master_csv['local'].head(show_limit).to_string())
+        pd.DataFrame(self.master_csv['local']).to_csv('josiah_local.csv')
 
 if __name__ == '__main__':
     dp = JosiahCSVParser()
-    dp.load_CSVs(read_limit=10)
-    dp.generate_CSV(300)
+    dp.load_CSVs(read_limit=None)
+    dp.generate_CSV()
