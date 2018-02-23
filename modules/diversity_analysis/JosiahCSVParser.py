@@ -25,8 +25,7 @@ class JosiahCSVParser(object):
         ut.context(self.data_workspace)
         self.csv_locations = ['UNCC_Termination pre 2017.xlsx',
                               'UNCC_HR Master Data active employees.xlsx',
-                              'UNCC My Success.csv',
-                              'MFG10YearTerminationData.csv']
+                              'UNCC My Success.csv']
 
         self.desired_columns = {'UNCC_Termination pre 2017': [
             'Personnel No.',
@@ -38,7 +37,7 @@ class JosiahCSVParser(object):
             'Termination',
             'Reason for action'
         ], 'UNCC_HR Master Data active employees': [
-            'Personal No.',
+            'Personnel Number',
             'Job',
             'Position',
             'Employee Group',
@@ -52,12 +51,16 @@ class JosiahCSVParser(object):
             'Employee Group',
             'Employee Subgroup',
             'Position Title'
-        ], 'MFG10YearTerminationData': [
-            'EmployeeID',
-            'city_name',
-            'job_title',
-            'gender_short'
         ]}
+        self.columns_to_rename = {
+            'UNCC_Termination pre 2017': [{}
+                                          ],
+            'UNCC_HR Master Data active employees': [
+                {'Personnel Number': 'Personnel No.'}
+            ],
+            'UNCC My Success': [
+                {'Employee Id': 'Personnel No.'}
+            ]}
 
         self.master_csv = {}
 
@@ -76,20 +79,29 @@ class JosiahCSVParser(object):
             # Drop Columns that are not important
 
     def generate_CSV(self, show_limit=5):
-        data_frame = pd.DataFrame(self.master_csv['UNCC_Termination pre 2017'])
-        # ut.context("Showing dataframe before editing \n" + data_frame.head(show_limit).to_string())
-        # Drop columns that we dont want
-        ut.context(str(len(data_frame)))
-        for key in data_frame:
-            if key not in self.desired_columns['UNCC_Termination pre 2017']:
-                data_frame.drop(labels=key, axis=1, inplace=True)
-        # ut.context("Showing dataframe after key drop \n" + data_frame.head(show_limit).to_string())
+        for label in self.master_csv:
+            data_frame = pd.DataFrame(self.master_csv[label])
+            # ut.context("Showing dataframe before editing \n" + data_frame.head(show_limit).to_string())
+            # Drop columns that we dont want
+            # ut.context(str(len(data_frame)))
+            for key in data_frame:
+                if key not in self.desired_columns[label]:
+                    data_frame.drop(labels=key, axis=1, inplace=True)
+            # ut.context("Showing dataframe after key drop \n" + data_frame.head(show_limit).to_string())
+            # ut.context("\n")
 
-        # Clean data
-        for key in data_frame:
-            ut.context("Show value occupancies: " + key + ": " + str(data_frame[key].unique()))
+            # Show Unique Values
+            # for key in data_frame:
+            #     ut.context("Show value occupancies: " + key + ": " + str(data_frame[key].unique()))
+
+            if self.columns_to_rename[label]:
+                for i in range(0, len(self.columns_to_rename[label])):
+                    data_frame.rename(columns=self.columns_to_rename[label][i], inplace=True)
+
+            ut.context("Showing dataframe after column rename fixes \n" + data_frame.head(show_limit).to_string())
+
 
 if __name__ == '__main__':
     dp = JosiahCSVParser()
-    dp.load_CSVs(read_limit=None)
+    dp.load_CSVs(read_limit=10)
     dp.generate_CSV(300)
