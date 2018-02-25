@@ -15,3 +15,4 @@ class Updater:
 if __name__ == "__main__":
     myUpdater = Updater()
     myUpdater.termination()
+
