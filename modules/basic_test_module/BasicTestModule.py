@@ -1,3 +1,5 @@
+from dash import dash
+
 from core.module import Module
 import dash_core_components as dcc
 
@@ -30,3 +32,6 @@ class BasicTestModule(Module):
 
     def __str__(self):
         return "hello"
+
+    def set_callback_function(self, app=dash.Dash()):
+        pass
