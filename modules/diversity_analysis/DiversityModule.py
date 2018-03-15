@@ -132,20 +132,33 @@ class DiversityModule(Module):
                     # Get the rows of the values in one column compared to the other
                     rows = pd.DataFrame(self.df.loc[(self.df[sample_1_axis_diversity_dropdown] == label) &
                                                     (self.df[sample_2_axis_diversity_dropdown] == other)])
-                    occurances = pd.DataFrame(rows).size
+
+                    print(str(rows))
+                    occurances = pd.DataFrame(rows).shape[0]
 
                     if label in values_per_labels1:
                         values_per_labels1[label].append(occurances)
                     else:
-                        values_per_labels1[label] = numpy.ndarray(occurances, dtype=int)
+                        values_per_labels1[label] = [occurances]
 
-            print('Values: ' + str(values_per_labels1))
+            # print('Values: ' + str(values_per_labels1))
             data = []
+            index = 0
+            final_labels = []
+            final_axis = []
             for label in labels:
                 for i, occurance in enumerate(values_per_labels1[label]):
-                    data.append({'x': (str(label) + ': ' + labels2[i]),
-                                 'y': occurance, 'type': 'bar'})
+                    final_labels.append((str(label) + '_' + labels2[i]))
+                    final_axis.append(occurance)
+                    # data.append({'x': (str(label) + '_' + labels2[i]),
+                    #              'y': occurance, 'type': 'bar'})
+                    # index += 1
+                    # data.append({'x': index,
+                    #              'y': occurance, 'type': 'bar'})
 
+            print(str(data))
             return {
-                'data': data
+                # 'data': [data]
+                'data': [{'x': final_labels,
+                          'y': final_axis, 'type': 'bar'}]
             }
