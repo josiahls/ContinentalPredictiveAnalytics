@@ -54,7 +54,7 @@ class DiversityModule(Module):
             ),
             dcc.Graph(id='diversity_pie_graph'),
             # Add the comparison bar chart
-            html.H1('Bar Comparisons'),
+            html.H1('2 Column Comparisons'),
             dcc.Dropdown(
                 id='sample_1_axis_diversity_dropdown',
                 options=[
@@ -123,7 +123,7 @@ class DiversityModule(Module):
             labels2 = self.df[sample_2_axis_diversity_dropdown].dropna()
             labels2 = labels2.unique()  # ex: other values
 
-            print('Labels: ' + str(labels))
+            #print('Labels: ' + str(labels))
             # Get the number of occurances for each combination
 
             values_per_labels1 = {}
@@ -133,7 +133,7 @@ class DiversityModule(Module):
                     rows = pd.DataFrame(self.df.loc[(self.df[sample_1_axis_diversity_dropdown] == label) &
                                                     (self.df[sample_2_axis_diversity_dropdown] == other)])
 
-                    print(str(rows))
+                    #print(str(rows))
                     occurances = pd.DataFrame(rows).shape[0]
 
                     if label in values_per_labels1:
@@ -148,6 +148,7 @@ class DiversityModule(Module):
             final_axis = []
             for label in labels:
                 for i, occurance in enumerate(values_per_labels1[label]):
+                    # if occurance != 0:
                     final_labels.append((str(label) + '_' + labels2[i]))
                     final_axis.append(occurance)
                     # data.append({'x': (str(label) + '_' + labels2[i]),

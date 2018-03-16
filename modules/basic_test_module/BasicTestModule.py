@@ -18,7 +18,7 @@ class BasicTestModule(Module):
                 ],
                 'layout': {
 
-                    'title': 'Josiah\'s Dash Data Visualization'
+                    'title': 'Data Visualization Test'
 
                 }
             }
