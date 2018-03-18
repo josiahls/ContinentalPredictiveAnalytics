@@ -34,6 +34,7 @@ class JosiahCSVParser(object):
             'Employee Group',
             'Employee Subgroup',
             'Gender Key',
+            'Birth Date',
             'Ethnicity',
             'Termination',
             'Reason for action'
@@ -46,6 +47,7 @@ class JosiahCSVParser(object):
             'Pay scale type',
         ], 'UNCC My Success': [
             'Employee Id',
+            'Date of Birth',
             'Gender',
             'Nationality',
             'Employee Group',
@@ -64,6 +66,7 @@ class JosiahCSVParser(object):
                 {'Employee Subgroup': 'Employee Pay Group'},
                 {'Employee Id': 'Personnel No.'},
                 {'Gender': 'Gender Key'},
+                {'Date of Birth': 'Birth Date'},
             ]}
 
         self.internal_columns_to_merge = {

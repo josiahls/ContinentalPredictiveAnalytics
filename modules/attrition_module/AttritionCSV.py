@@ -6,7 +6,7 @@ from pathlib import Path
 
 ut = Utility('AttritionCSVParser')
 
-class AttritionCSVParser(object):
+class AttritionCSV(object):
 
     def __init__(self):
         self.data = {}

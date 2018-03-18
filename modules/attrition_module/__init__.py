@@ -1,1 +1,1 @@
-from . import Attritionmodule
+from . import AttritionModule

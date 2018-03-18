@@ -2,7 +2,7 @@ from core.module import Module
 import dash_core_components as dcc
 
 
-class Attrition(Module):
+class AttritionModule(Module):
     def __init__(self):
         super().__init__()
 
