@@ -1,6 +1,6 @@
 from core.module import Module
 import dash_core_components as dcc
-
+from dash import Dash, dash
 
 class AttritionModule(Module):
     def __init__(self):
@@ -30,3 +30,6 @@ class AttritionModule(Module):
 
     def __str__(self):
         return "hello"
+
+    def set_callback_function(self, app=dash.Dash()):
+        pass
