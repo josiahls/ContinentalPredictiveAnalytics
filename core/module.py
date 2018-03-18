@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-
+import dash
 
 class Module(ABC):
     def __init__(self):
@@ -7,7 +7,6 @@ class Module(ABC):
         This is the core module. One of the main functions of it is to
         return a view that dash can handle.
         """
-        pass
 
     @abstractmethod
     def get_view(self):
@@ -23,4 +22,8 @@ class Module(ABC):
 
     @abstractmethod
     def __str__(self):
+        pass
+
+    @abstractmethod
+    def set_callback_function(self, app=dash.Dash()):
         pass
