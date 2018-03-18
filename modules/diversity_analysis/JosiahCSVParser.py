@@ -56,7 +56,7 @@ class JosiahCSVParser(object):
         ]}
 
         self.columns_to_rename = {
-            'UNCC_Termination pre 2017': [{}
+            'UNCC_Termination pre 2017': [{'Employee Subgroup': 'Employee Pay Group'}
                                           ],
             'UNCC_HR Master Data active employees': [
                 {'Employee Subgroup': 'Employee Pay Group'},
@@ -198,6 +198,7 @@ class JosiahCSVParser(object):
                 #                 self.master_csv['local'][column_to_merge][i] = self.master_csv['local'][column][i]
                 #                 changed = True
                 #                 break
+
 
 
 if __name__ == '__main__':
