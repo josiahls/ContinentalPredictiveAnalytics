@@ -44,7 +44,7 @@
         <li>
         pip install dash  # The core dash backend
         <li>
-        pip install dash-renderer # The dash front-end
+        pip install dash-renderer==0.9.0 # The dash front-end
         <li>
         pip install dash-html-components # HTML components
         <li>

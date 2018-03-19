@@ -123,7 +123,7 @@ class DiversityModule(Module):
             labels2 = self.df[sample_2_axis_diversity_dropdown].dropna()
             labels2 = labels2.unique()  # ex: other values
 
-            #print('Labels: ' + str(labels))
+            # print('Labels: ' + str(labels))
             # Get the number of occurances for each combination
 
             values_per_labels1 = {}
@@ -133,7 +133,7 @@ class DiversityModule(Module):
                     rows = pd.DataFrame(self.df.loc[(self.df[sample_1_axis_diversity_dropdown] == label) &
                                                     (self.df[sample_2_axis_diversity_dropdown] == other)])
 
-                    #print(str(rows))
+                    # print(str(rows))
                     occurances = pd.DataFrame(rows).shape[0]
 
                     if label in values_per_labels1:
