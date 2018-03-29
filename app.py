@@ -141,7 +141,7 @@ if __name__ == '__main__':
     )
 
 
-#####
+#####vyvy
 
 
     @app.callback(Output('tab-output', 'children'), [Input('tabs', 'value')])
