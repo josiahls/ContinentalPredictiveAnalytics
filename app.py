@@ -157,6 +157,7 @@ if __name__ == '__main__':
     # Loading screen CSS
     # app.css.append_css({"external_url": "https://josiahls.github.io/loading_screen.css"})
     app.css.append_css({"external_url": "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"})
+    app.css.append_css({"external_url": "https://josiahls.github.io/loading_screen.css"})
     app.server.run(debug=True, threaded=True)
 
 
