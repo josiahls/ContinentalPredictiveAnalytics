@@ -33,6 +33,8 @@ class DiversityModule(Module):
 
     def get_view(self):
         return html.Div([
+
+
             # Add the bar chart
             html.H1('Bar Comparisons'),
             dcc.Dropdown(

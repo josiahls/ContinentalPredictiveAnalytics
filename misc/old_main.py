@@ -1,22 +1,17 @@
 # In[]:
 # Import required libraries
-import os
 
 import datetime as dt
+import math
 
-import pandas as pd
-from flask import Flask
 import dash
-from dash.dependencies import Input, Output, State
 import dash_core_components as dcc
 import dash_html_components as html
-import math
-import dash_table_experiments as dtable
-
 import numpy as np
-
+import pandas as pd
+from dash.dependencies import Input, Output, State
 # Machine Learning
-from sklearn import preprocessing, cross_validation, svm
+from sklearn import preprocessing, cross_validation
 from sklearn.linear_model import LinearRegression
 
 # In[]:
@@ -534,27 +529,6 @@ def display_content(value):
             ])  # End Tab 1
 
 
-    ##                html.Div(
-    ##                    [
-    ##                        html.Div(
-    ##                            [
-    ##                                dcc.Graph(id='pie_graph')
-    ##                            ],
-    ##                            className='eight columns',
-    ##                            style={'margin-top': '10'}
-    ##                        ),
-    ####                        html.Div(
-    ####                            [
-    ####                                dcc.Graph(id='aggregate_graph')
-    ####                            ],
-    ####                            className='four columns',
-    ####                            style={'margin-top': '10'}
-    ####                        ),
-    ##                    ],
-    ##                    className='row'
-    ##                ),
-    ##            ],
-    ##            className='ten columns offset-by-one'
 
 
     elif value == 'tab_Abs':
@@ -590,293 +564,6 @@ def display_content(value):
                     },
                 ),
 
-                ##
-                ###********** Add a total prediction without filters
-                ##
-                ##                 # Start Date slider and Capacity Utilization Level slider
-                ##                 html.Div(
-                ##                     [
-                ##                         html.Div( # Start date
-                ##                             [
-                ##                                html.P(
-                ##                                    '',
-                ##                                    id='AbsStartDate_text',),
-                ##                                 html.Div(
-                ##                                     [
-                ##                                         dcc.RangeSlider(
-                ##                                             id='AbsStartDate_slider',
-                ##                                             min = 0,
-                ##                                             max = AbsStartDate_range,
-                ##                                             value = [0, AbsStartDate_range],
-                ##                                             step = 1,
-                ##                                             marks={
-                ##                                                 0: AbsStartDate_min.strftime('%m/%d/%Y'),
-                ##                                                 AbsStartDate_range: AbsStartDate_max.strftime('%m/%d/%Y'),
-                ##                                                 },
-                ##                                             ),
-                ##                                         ],
-                ##                                     style={'margin-left': '30', 'margin-right': '30'},
-                ##                                     ),
-                ##                                ],
-                ##                             className='five columns',
-                ##                             #style={'border-style': 'solid'},
-                ##                             ),
-                ##
-                ##
-                ##                         html.Div( # Capacity Utilization Level
-                ##                             [
-                ##                                html.P(
-                ##                                    '',
-                ##                                    id='Capacity_text',),
-                ##                                 html.Div(
-                ##                                     [
-                ##                                         dcc.RangeSlider(
-                ##                                             id='Capacity_slider',
-                ##                                            min= Capacity_min,
-                ##                                            max= Capacity_max,
-                ##                                            value=[90, 100],
-                ##                                            step = 1,
-                ##                                            marks={
-                ##                                                int(Capacity_min): str(Capacity_min),
-                ##                                                int(Capacity_max): str(Capacity_max),
-                ##                                                },
-                ##                                            ),
-                ##                                         ],
-                ##                                     style={'margin-left': '30', 'margin-right': '30'},
-                ##                                     ),
-                ##                                ],
-                ##                             className='five columns',
-                ##                             style={'margin-left': '60'},
-                ##                             ),
-                ##
-                ##                         ],
-                ##                     className='row',
-                ##                     style={'margin-left': '40'},
-                ##                     ),
-                ##
-                ##
-                ##
-                ##                 # Gender selection
-                ##                 html.Div(
-                ##                     [
-                ##                         html.P('Filter by Gender:'),
-                ##                         dcc.RadioItems(
-                ##                            id='AbsGender_selector',
-                ##                            options=[
-                ##                                {'label': 'All ', 'value': 'All'},
-                ##                                {'label': 'Female ', 'value': 'Female'},
-                ##                                {'label': 'Male ', 'value': 'Male'}
-                ##                                ],
-                ##                            value='All',
-                ##                            labelStyle={'display': 'inline-block'}
-                ##                            ),
-                ##
-                ##                         ],
-                ##                     className='row',
-                ##                     style={'margin-top': '40','margin-left': '40'},
-                ##                     ),
-                ##
-                ##
-                ##
-                ##
-                ##
-                ##                 #  'Employee Group_A' 'Company' filters
-                ##                 html.Div(
-                ##                     [
-                ##
-                ##                         html.Div(  # by employment group
-                ##                             [
-                ##                                 html.P('Filter by Employment Sub Group:'),
-                ##                                 dcc.RadioItems(
-                ##                                     id='AbsEsGroup_selector',
-                ##                                    options=[
-                ##                                        {'label': 'All ', 'value': 'All'},
-                ##                                        {'label': 'Customize ', 'value': 'Customize'}
-                ##                                        ],
-                ##                                    value='All',
-                ##                                    labelStyle={'display': 'inline-block'}
-                ##                                    ),
-                ##                                 dcc.Dropdown(
-                ##                                        id = 'AbsEsGroup_dropdown',
-                ##                                        options = AbsEGroup_options,
-                ##                                        multi = True,
-                ##                                        value = []
-                ##                                        ),
-                ##                                 ],
-                ##                             className='five columns',
-                ##                             #style={'border-style': 'solid'},
-                ##                             ),
-                ##
-                ##
-                ##
-                ##                         html.Div(  # by company
-                ##                             [
-                ##                                html.P('Filter by Company:'),
-                ##                                dcc.RadioItems(
-                ##                                    id='AbsCompany_selector',
-                ##                                    options=[
-                ##                                        {'label': 'All ', 'value': 'All'},
-                ##                                        {'label': 'Customize ', 'value': 'Customize'}
-                ##                                        ],
-                ##                                    value='All',
-                ##                                    labelStyle={'display': 'inline-block'}
-                ##                                    ),
-                ##                                 dcc.Dropdown(
-                ##                                        id = 'AbsCompany_dropdown',
-                ##                                        options = AbsCompany_options,
-                ##                                        multi = True,
-                ##                                        value = []
-                ##                                    ),
-                ##                                ],
-                ##                             className='five columns',
-                ##                             #style={'border-style': 'solid'},
-                ##                             ),
-                ##
-                ##                         ],
-                ##                     className='row',
-                ##                     style={'margin-top': '40','margin-left': '40'},
-                ##                     ),
-                ##
-                ##
-                ##
-                ##                 # No of data
-                ##                 html.Div(
-                ##                     [
-                ##                         html.H4(
-                ##                             '',
-                ##                             id='AbsnoData_text',),
-                ##                         ],
-                ##                      className='row',
-                ##                     style={'margin-top': '40','margin-left': '40'},
-                ##                     ),
-                ##
-                ##
-                ##
-                ##
-                ##
-                ##
-                ##                 # Map and individual graph based on location
-                ##                 html.Div(
-                ##                     [
-                ##                        html.Div(
-                ##                            [
-                ##                                dcc.Graph(id='Absmain_graph')
-                ##                                ],
-                ##                            className='seven columns',
-                ##    ##                        style={'width': '90%','height':'90%'},
-                ##                            ),
-                ##                        html.Div(
-                ##                            [
-                ##                                dcc.Graph(id='Absindividual_graph')
-                ##                                ],
-                ##                            className='five columns',
-                ##    ##                        style={'width': '90%','height':'90%'},
-                ##                            ),
-                ##                        ],
-                ##                    className='row',
-                ##                    style={'margin-top':'40'},
-                ##                     ),
-                ##
-                ##
-                ##
-                ##
-                ##                 # Pie Charts
-                ##                 html.Div(
-                ##                     [
-                ##                         html.Div( # Division Name
-                ##                            [
-                ##                                dcc.Graph(id='pie_AbsDivision')
-                ##                                ],
-                ##                            className='four columns',
-                ##                            style={'margin-top': '10'}
-                ##                            ),
-                ##
-                ##                        html.Div( # Functional Area
-                ##                            [
-                ##                                dcc.Graph(id='pie_AbsFuncArea')
-                ##                                ],
-                ##                            className='four columns',
-                ##                            style={'margin-top': '10'}
-                ##                            ),
-                ##
-                ##                        html.Div( # Job
-                ##                            [
-                ##                                dcc.Graph(id='pie_AbsJob')
-                ##                                ],
-                ##                            className='four columns',
-                ##                            style={'margin-top': '10'}
-                ##                            ),
-                ##
-                ##                         ],
-                ##                     className='row',
-                ##                     style={'margin-top':'40'},
-                ##                     ),
-                ##
-                ##
-                ##                 html.Div(
-                ##                     [
-                ##                         html.Div( # Position
-                ##                            [
-                ##                                dcc.Graph(id='pie_AbsPosition')
-                ##                                ],
-                ##                            className='four columns',
-                ##                            style={'margin-top': '10'}
-                ##                            ),
-                ##
-                ##                          html.Div( #  Cost Center_A
-                ##                            [
-                ##                                dcc.Graph(id='pie_AbsCostCtr')
-                ##                                ],
-                ##                            className='four columns',
-                ##                            style={'margin-top': '10'}
-                ##                            ),
-                ##
-                ##                          html.Div( # Attendance or Absence Type
-                ##                            [
-                ##                                dcc.Graph(id='pie_AbsType')
-                ##                                ],
-                ##                            className='four columns',
-                ##                            style={'margin-top': '10'}
-                ##                            ),
-                ##
-                ##
-                ##                         ],
-                ##                     className='row',
-                ##                     style={'margin-top':'40'},
-                ##                     ),
-                ##
-                ##
-                ##
-                ##                 # 'Entry', plot
-                ##                 # age plot
-                ##
-                ##                 html.Div(
-                ##                     [
-                ##                         html.Div( #'Entry', plot
-                ##                            [
-                ##                                dcc.Graph(id='pie_AbsEntry')
-                ##                                ],
-                ##                            className='four columns',
-                ##                            style={'margin-top': '10'}
-                ##                            ),
-                ##
-                ##                        html.Div( # age plot
-                ##                            [
-                ##                                dcc.Graph(id='pie_AbsAge')
-                ##                                ],
-                ##                            className='four columns',
-                ##                            style={'margin-top': '10'}
-                ##                            ),
-                ##
-                ##
-                ##                         ],
-                ##                     className='row',
-                ##                     style={'margin-top':'40'},
-                ##                     ),
-                ##
-                ##
-                ##
-                ##
 
             ])
 
@@ -918,144 +605,7 @@ def display_content(value):
                         'text-align': 'center',
                     },
                 ),
-                ##
-                ##                 # Opening date figure, Division filter, time option
-                ##                 html.Div(
-                ##                     [
-                ##                         html.Div(
-                ##                             [
-                ##                                 html.Div(  # Division filter
-                ##                                     [
-                ##                                         html.P('Filter by Division:'),
-                ##                                         dcc.RadioItems(
-                ##                                            id='HireDivision_selector',
-                ##                                            options=[
-                ##                                                {'label': 'All ', 'value': 'All'},
-                ##                                                {'label': 'Customize ', 'value': 'Customize'}
-                ##                                                ],
-                ##                                            value='All',
-                ##                                            labelStyle={'display': 'inline-block'}
-                ##                                            ),
-                ##                                         dcc.Dropdown(
-                ##                                                id = 'HireDivision_dropdown',
-                ##                                                options = HireDivision_options,
-                ##                                                multi = True,
-                ##                                                value = []
-                ##                                            ),
-                ##                                         ],
-                ##                                     className='row',
-                ##                                     #style={'border-style': 'solid'},
-                ##                                     ),
-                ##
-                ##                                 html.Div( # time option
-                ##                                     [
-                ##                                         html.P('Time calculation options:'),
-                ##                                         dcc.RadioItems(
-                ##                                             id='HireTime_options',
-                ##                                             options=[
-                ##                                                 {'label': 'Position open to Offer Accepted', 'value': 'POOA'},
-                ##                                                 {'label': 'Position open to Hired', 'value': 'POH'},
-                ##                                                 ],
-                ##                                            value='All',
-                ##                                            labelStyle={'display': 'inline-block'}
-                ##                                            ),
-                ##                                         ],
-                ##                                     className='row',
-                ##                                     #style={'border-style': 'solid'},
-                ##                                     ),
-                ##
-                ##                                 ],
-                ##                             className='five columns',
-                ##                             #style={'border-style': 'solid'},
-                ##                             ),
-                ##
-                ##
-                ##                         html.Div( # Open date figure v.s. time to hire
-                ##                             [
-                ####                                 html.P(
-                ####                                    '',
-                ####                                    id='OpenDate_text',),
-                ##                                 html.Div(
-                ##                                     [
-                ##                                         dcc.Graph(id='HireOpen_graph')
-                ##                                         ],
-                ##                                     className='five columns',
-                ####                                     style={'margin-top': '10'}
-                ##                                     ),
-                ##                                ],
-                ##
-                ##                            className='five columns',
-                ##                            #style={'border-style': 'solid'},
-                ##                            ),
-                ##
-                ##
-                ##                         # No of data
-                ##                         html.Div(
-                ##                             [
-                ##                                 html.H4(
-                ##                                     '',
-                ##                                     id='HirenoData_text',),
-                ##                                 ],
-                ##                             className='five columns',
-                ##                             style={'margin-top': '40','margin-left': '40'},
-                ##                             ),
-                ##
-                ##                         ],
-                ##                     className='row',
-                ##                     style={'margin-left': '40'},
-                ##                     ),
-                ##
-                ##
-                ##                 # Map and individual graph based on location
-                ##                 html.Div(
-                ##                     [
-                ##                        html.Div(
-                ##                            [
-                ##                                dcc.Graph(id='Hiremain_graph')    # chorology by state because all in US
-                ##                                ],
-                ##                            className='seven columns',
-                ##    ##                        style={'width': '90%','height':'90%'},
-                ##                            ),
-                ##                        html.Div(
-                ##                            [
-                ##                                dcc.Graph(id='Hireindividual_graph') # time to hire v.s. open date *********** Forcasting on this
-                ##                                ],
-                ##                            className='five columns',
-                ##    ##                        style={'width': '90%','height':'90%'},
-                ##                            ),
-                ##                        ],
-                ##                    className='row',
-                ##                    style={'margin-top':'40'},
-                ##                    ),
-                ##
-                ##
-                ##
-                ##                # Pie Charts
-                ##                html.Div(
-                ##                    [
-                ##                    html.Div(
-                ##                        [
-                ##                            dcc.Graph(id='pie_HirePosition')
-                ##                            ],
-                ##                        className='four columns',
-                ##                        style={'margin-top': '10'}
-                ##                        ),
-                ##
-                ##                    html.Div(
-                ##                        [
-                ##                            dcc.Graph(id='pie_HireJob')
-                ##                            ],
-                ##                        className='four columns',
-                ##                        style={'margin-top': '10'}
-                ##                        ),
-                ##
-                ##                    ],
-                ##                    className='row',
-                ##                    style={'margin-top':'40'},
-                ##                    ),
 
-                # ******************* Pie chart click
-                # ******************* Select top 5 button
 
             ])
 
@@ -1092,30 +642,7 @@ def display_content(value):
                     [
                         html.H4('External DataTable',
                                 style={'font-weight': 'bold', }, ),
-                        ##                        dtable.DataTable(
-                        ##                            rows=ExtData.to_dict('records'),
-                        ##
-                        ##                            # optional - sets the order of columns
-                        ##                            columns=sorted(ExtData.columns),
-                        ##
-                        ##                            row_selectable=True,
-                        ##                            filterable=True,
-                        ##                            sortable=True,
-                        ##                            selected_row_indices=[],
-                        ##                            id='datatable-External'
-                        ##                        ),
-                        ##                        html.Div(id='selected-indexes'),
-                        ##                        dcc.Graph(
-                        ##                            id='graph-External'
-                        ##                        ),
-                        ##                      ],
-                        ##                  className="container"
-                        ##                  ),
 
-
-                        generate_table(ExtData),
-
-                        ##                      draw_pie_ExtFactors(ExtData)
                     ],
 
                     style={'margin-left': '40', 'font-size': fontsizeS, 'font-weight': 'bold', }
@@ -1132,17 +659,7 @@ def display_content(value):
                             ##                            classname = 'col-sm-5',
                             ##                            style={'margin-left': '40','font-weight':'bold', 'background-color':"#191A1A"},
                         ),
-                        ##                                dcc.Graph(id='pie_ExtFactors')
-                        ##                                ],
-                        ##                            className='row',
-                        ##                            style={'margin-top': '10','font-size':fontsizeS,'font-weight':'bold',}
-                        ##                            ),
-                        ##                        ],
-                        ##                    classname = 'col-sm-3',
-                        ##                     style={'align':'center','margin-left': '40','font-weight':'bold', 'background-color':"#191A1A"},
-                        ##                    ),
-                        ##
-                        ##              html.Div(id='ExtData-state')
+
                     ]),
 
             ])
