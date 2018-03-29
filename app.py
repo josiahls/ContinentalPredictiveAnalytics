@@ -115,7 +115,6 @@ if __name__ == '__main__':
 
     # Loading screen CSS
     app.css.append_css({"external_url": "https://josiahls.github.io/loading_screen.css"})
-
     app.server.run(debug=True, threaded=True)
 
 
