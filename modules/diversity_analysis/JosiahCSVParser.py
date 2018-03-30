@@ -34,9 +34,11 @@ class JosiahCSVParser(object):
             'Employee Group',
             'Employee Subgroup',
             'Gender Key',
+            'Entry'
             'Birth Date',
             'Ethnicity',
             'Termination',
+            'Personnel Area',
             'Reason for action'
         ], 'UNCC_HR Master Data active employees': [
             'Personnel Number',
@@ -44,19 +46,23 @@ class JosiahCSVParser(object):
             'Employee Group',
             'Employee Subgroup',
             'Gender Key',
+            'Personnel Area'
             'Pay scale type',
         ], 'UNCC My Success': [
             'Employee Id',
+            'Hire Date',
             'Date of Birth',
             'Gender',
             'Nationality',
             'Employee Group',
+            'Personnel Area',
             'Employee Subgroup',
             'Position Title'
         ]}
 
         self.columns_to_rename = {
-            'UNCC_Termination pre 2017': [{'Employee Subgroup': 'Employee Pay Group'}
+            'UNCC_Termination pre 2017': [{'Employee Subgroup': 'Employee Pay Group'},
+                                          {'Entry':'Hire Date'}
                                           ],
             'UNCC_HR Master Data active employees': [
                 {'Employee Subgroup': 'Employee Pay Group'},
@@ -199,6 +205,7 @@ class JosiahCSVParser(object):
                 #                 changed = True
                 #                 break
 
+                self.master_csv['local']['Gender Key'].replace(['M', 'F'], ['Male', 'Female'], inplace=True)
 
 
 if __name__ == '__main__':
