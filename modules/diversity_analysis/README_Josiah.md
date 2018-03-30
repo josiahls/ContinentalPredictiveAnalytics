@@ -19,7 +19,11 @@ There are a lot of correlated data.
 Gender is labeled weirdly.
 
 We have age, gender, ethnicity
-
+</p>
+<p>
+    Note to self: look into using sklearn.preprocessing.Imputer
+</p>
+<p>
 We are missing:
 More detailed Race (ethnicity seemed hispanic mostly)
 Missing country of origin (or all of them are from Canada???)
