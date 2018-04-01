@@ -25,7 +25,7 @@ class RamyaDiversityParser(object):
                                 'Cost Center','Gender Key'];
 
         #df.rename(columns={'Cost Ctr':'Cost center code',
-                            #'Job':'Position'}, inplace=True)
+                            #'Job':'Position'}, inplace=True)hg
 
 
 
