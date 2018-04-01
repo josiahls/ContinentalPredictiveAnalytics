@@ -113,6 +113,8 @@ if __name__ == '__main__':
     for analysis_module in LIST_OF_MODULE_INSTANCES:
         analysis_module.set_callback_function(app=app)
 
+    # Loading screen CSS
+    app.css.append_css({"external_url": "https://josiahls.github.io/loading_screen.css"})
     app.server.run(debug=True, threaded=True)
 
 
