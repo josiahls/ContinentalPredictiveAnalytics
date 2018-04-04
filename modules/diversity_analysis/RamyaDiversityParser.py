@@ -24,8 +24,12 @@ class RamyaDiversityParser(object):
                                 'Personnel Country', 'Personnel state', 'Personnel city','Employee Group','Employee Subgroup',
                                 'Cost Center','Gender Key'];
 
+
+
         #df.rename(columns={'Cost Ctr':'Cost center code',
                             #'Job':'Position'}, inplace=True)hg
+
+        self.Pred.groupby()
 
 
 
@@ -42,9 +46,6 @@ class RamyaDiversityParser(object):
         self.diversity = self.diversity[self.Coulumns_of_interest]
 
         print(self.diversity.head(3))
-
-
-
 
         self.diversity.to_csv('RamyaParser1')
 
@@ -119,6 +120,9 @@ class RamyaDiversityParser(object):
 
 
         #
+
+
+
 
 
 
