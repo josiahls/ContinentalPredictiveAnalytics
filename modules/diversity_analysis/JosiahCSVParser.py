@@ -25,6 +25,62 @@ class JosiahCSVParser(object):
                               'UNCC_HR Master Data active employees.xlsx',
                               'UNCC My Success.csv',
                               'MFG10YearTerminationData.csv']
+                              'UNCC My Success.csv']
+
+        self.desired_columns = {'UNCC_Termination pre 2017': [
+            'Personnel No.',
+            'Job Title',
+            'Employee Group',
+            'Employee Subgroup',
+            'Gender Key',
+            'Entry'
+            'Birth Date',
+            'Ethnicity',
+            'Termination',
+            'Personnel Area',
+            'Reason for action'
+        ], 'UNCC_HR Master Data active employees': [
+            'Personnel Number',
+            'Job Title',
+            'Employee Group',
+            'Employee Subgroup',
+            'Gender Key',
+            'Personnel Area'
+            'Pay scale type',
+        ], 'UNCC My Success': [
+            'Employee Id',
+            'Hire Date',
+            'Date of Birth',
+            'Gender',
+            'Nationality',
+            'Employee Group',
+            'Personnel Area',
+            'Employee Subgroup',
+            'Position Title'
+        ]}
+
+        self.columns_to_rename = {
+            'UNCC_Termination pre 2017': [{'Employee Subgroup': 'Employee Pay Group'},
+                                          {'Entry':'Hire Date'}
+                                          ],
+            'UNCC_HR Master Data active employees': [
+                {'Employee Subgroup': 'Employee Pay Group'},
+                {'Personnel Number': 'Personnel No.'}
+            ],
+            'UNCC My Success': [
+                {'Employee Subgroup': 'Employee Pay Group'},
+                {'Employee Id': 'Personnel No.'},
+                {'Gender': 'Gender Key'},
+                {'Date of Birth': 'Birth Date'},
+            ]}
+
+        self.internal_columns_to_merge = {
+            'Gender Key': [],
+            'Job Title': ['Position Title'],
+            'Employee Group': [],
+            'Employee Pay Group': []
+        }
+
         self.master_csv = {}
 
     def load_CSVs(self, read_limit=None):
@@ -47,6 +103,8 @@ class JosiahCSVParser(object):
 
 
         pass
+
+                self.master_csv['local']['Gender Key'].replace(['M', 'F'], ['Male', 'Female'], inplace=True)
 
 
 if __name__ == '__main__':
