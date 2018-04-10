@@ -1,0 +1,27 @@
+from abc import ABC, abstractmethod
+import dash
+import pandas
+
+
+class Page(ABC):
+    def __init__(self):
+        """
+        This is the core module. One of the main functions of it is to
+        return a view that dash can handle.
+        """
+
+    @abstractmethod
+    def get_view(self):
+        pass
+
+    @abstractmethod
+    def set_callbacks(self, app=dash.Dash()):
+        pass
+
+    @abstractmethod
+    def get_page_id(self):
+        pass
+
+    @abstractmethod
+    def get_page_name(self):
+        pass
