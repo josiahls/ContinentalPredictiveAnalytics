@@ -10,80 +10,66 @@ warnings.filterwarnings("ignore")
 
 
 # noinspection PyUnusedLocal,PyPep8Naming
-class ARIMA_EMPLOYEE_GROUP(object):
+class ARIMA_Coordinates(object):
+
+
     def __init__(self):
         self.data = {}
         self.data_workspace = str(Path(__file__).parents[0])
         self.data_workspace += os.sep
 
-        self.Pred = pd.read_excel(self.data_workspace + 'RamyaCleanedDiversity.xlsx', encoding='ISO-8859-1')
+        self.Pred = pd.read_excel(self.data_workspace + 'CleanedDiversity_Coordinates.xlsx', encoding='ISO-8859-1')
+
+        #pd.DataFrame(self.Pred).to_csv()
 
         print(self.Pred.tail())
 
-        self.Years_based_columns = ['Entry', 'Employee Subgroup', 'Latitude'];
+        self.Years_based_columns = ['Entry', 'Gender Key', 'Coordinates'];
 
         self.Pred = self.Pred[self.Years_based_columns]
 
-        self.Pred=self.Pred[self.Pred['Employee Subgroup']!='Intern-Student']
+        self.Pred = self.Pred[self.Pred['Coordinates'] != '29.7606,-95.3697']
+
+        self.Pred = self.Pred[self.Pred['Coordinates'] != '32.2216,-110.9698']
 
         self.Pred['Entry'] = self.Pred['Entry'].apply(lambda x: x.strftime('%Y'))
 
         columns = []
         for label in self.Pred:
             columns.append(label)
+        latlong_Coord = []
+        latlong_Coord = self.Pred['Coordinates'].unique()
+        latlong_Coord.sort()
+        '''lat_Coord =[]
+        lat_Coord = [i.split(',', 1)[0] for i in latlong_Coord]
+        long_Coord = []
+        long_Coord = [i.split(',', 1)[1] for i in latlong_Coord]'''
+
+        Coordinates_list = range(0, 34)
+
+        for i in Coordinates_list:
 
 
-        Gender_list = range(0, 6)
+            self.df = self.Pred.groupby(['Entry', 'Coordinates']).count()  # Grouping the Gender based on the month-year
 
-        for i in Gender_list:
-
-            if (i == 0):
-                a = 'Executive'
-            elif ( i== 1):
-                a = 'Hourly'
-            elif(i==2) :
-                a='Nonexempt'
-            elif(i==3):
-                a='Salary Grade 12'
-            elif (i == 4):
-                a = 'Salary Grade Less 12'
-
-            else:
-                a='Senior Executive'
-
-
-
-
-            self.df = self.Pred.groupby(['Entry', 'Employee Subgroup']).count()  # Grouping the Gender based on the month-year
-
-            self.df1 = self.df.unstack('Employee Subgroup')  # Display Gender values in seperate columns
-
-
+            self.df1 = self.df.unstack('Coordinates')  # Display Gender values in seperate columns
 
             self.df1 = pd.DataFrame(self.df1, dtype='float')
 
             self.df1.fillna(self.df1.mean(), inplace=True)
 
-            print(self.df1.head())
-
-            #self.df1.to_csv('EmployeeeGrp')
-
-            self.df1.drop(self.df1.index[:36], inplace=True)
-
-            print(i)
-
+            self.df1.drop(self.df1.index[:40], inplace=True)
 
             self.df1 = self.df1[self.df1.columns[i]]
 
             #self.df1.drop(self.df1.columns[i], axis=1, inplace=True)
 
-            print(self.df1.tail())
 
             X = self.df1.values
 
-            self.df1.plot()
+            #self.df1.plot()
 
-            pyplot.show()
+            #pyplot.show()
 
             split_point = len(self.df1) - 7
 
@@ -126,7 +112,7 @@ class ARIMA_EMPLOYEE_GROUP(object):
 
             forecast = model_fit.forecast(steps=10)[0]
 
-            print('The Hiring rate for the next 10 years for', (a))
+            print('The Hiring rate for the next 10 years for', (i))
 
             history = [x for x in X]
             year = 1
@@ -136,23 +122,23 @@ class ARIMA_EMPLOYEE_GROUP(object):
                 history.append(inverted)
                 year += 1
 
-                # Load back into csv
-                year = 1
-                entries = []
-                for yhat in forecast:
-                    inverted = inverse_difference(history, yhat)
-                    if inverted < 0:
-                        continue
-                    for j in range(0, int(abs(inverted))):
-                        entries.append([str((2017 + year)), 'female', a])
-                        # self.Pred.append({'Entry':(2017+year), 'Gender Key':'Male', 'Coordinates':i}, ignore_index=True)
-                    year += 1
+            # Load back into csv
+            year = 1
+            entries = []
+            for yhat in forecast:
+                inverted = inverse_difference(history, yhat)
+                if inverted < 0:
+                    continue
+                for j in range(0, int(abs(inverted))):
+                    entries.append([str((2017+year)), 'Male', str(latlong_Coord[i])])
+                    #self.Pred.append({'Entry':(2017+year), 'Gender Key':'Male', 'Coordinates':i}, ignore_index=True)
+                year += 1
 
-                location_set = pd.DataFrame(entries, columns=columns)
-                self.Pred = self.Pred.append(location_set)
+            location_set = pd.DataFrame(entries, columns=columns)
+            self.Pred = self.Pred.append(location_set)
 
-            pd.DataFrame(self.Pred).to_csv('parsed_employee_subgroup_csv')
+        pd.DataFrame(self.Pred).to_csv('parsed_location_csv')
 
 
 if __name__ == '__main__':
-    dp = ARIMA_EMPLOYEE_GROUP()
+    dp = ARIMA_Coordinates()
