@@ -71,6 +71,8 @@ class ARIMA_Coordinates(object):
 
             #pyplot.show()
 
+            #Refernece: https://machinelearningmastery.com/grid-search-arima-hyperparameters-with-python/
+
             split_point = len(self.df1) - 7
 
             dataset, validation = self.df1[0:split_point], self.df1[split_point:]

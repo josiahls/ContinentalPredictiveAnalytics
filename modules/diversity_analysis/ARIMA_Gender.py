@@ -9,6 +9,8 @@ import warnings
 warnings.filterwarnings("ignore")
 
 
+# Refernece: https://machinelearningmastery.com/grid-search-arima-hyperparameters-with-python/
+
 # noinspection PyUnusedLocal,PyPep8Naming
 class ARIMA_Gender(object):
     def __init__(self):
