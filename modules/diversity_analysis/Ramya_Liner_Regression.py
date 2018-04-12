@@ -12,18 +12,19 @@ from matplotlib import pyplot as plt
 
 
 
-# noinspection PyUnusedLocal,PyPep8Naming
-class RamyaCSVParser(object):
+# Cross validation with Linear Regression to check the accuracy
+
+class Ramya_Liner_Regression(object):
     def __init__(self):
         self.data = {}
         self.data_workspace = str(Path(__file__).parents[0])
         self.data_workspace += os.sep
 
-        self.Pred = pd.read_excel(self.data_workspace + 'RamyaCleanedDiversity.xlsx', encoding='ISO-8859-1')
+        self.Pred = pd.read_excel(self.data_workspace + 'ARIMA_Female.xlsx', encoding='ISO-8859-1')
 
         #print(self.Pred.head())
 
-        self.Years_based_columns = ['Entry','Gender Key','Latitude','Longitude','Hire Year'];
+        #self.Years_based_columns = ['Entry','Gender Key','Latitude','Longitude','Hire Year'];
 
         #self.Pred['Entry'] = pd.to_datetime(self.Pred['Entry'], format='%Y')
 
@@ -31,7 +32,7 @@ class RamyaCSVParser(object):
 
         #self.Pred['Entry'] = pd.to_string(self.Pred['Entry'])
 
-        print(self.Pred.head())
+        """ print(self.Pred.head())
 
         self.Pred['Entry'] = self.Pred['Entry'].dt.strftime('%Y-%m-%d')
 
@@ -52,7 +53,7 @@ class RamyaCSVParser(object):
 
         self.Pred["Gender Key_ENC"] = self.Pred["Gender Key"].cat.codes
 
-        '''self.diversity["Employee Pay Group"] = self.diversity["Employee Pay Group"].astype('category')
+        self.diversity["Employee Pay Group"] = self.diversity["Employee Pay Group"].astype('category')
         self.diversity.dtypes
 
         self.diversity["Employee Pay Group_ENC"] = self.diversity["Employee Pay Group"].cat.codes
@@ -65,10 +66,10 @@ class RamyaCSVParser(object):
 
         # print(diversity_imputer.head())
 
-        # target = pd.DataFrame(self.diversity.target, columns=["Gender Key_ENC"])'''
+        # target = pd.DataFrame(self.diversity.target, columns=["Gender Key_ENC"])"""
 
-        X = np.array(self.Pred['Hire Year']).reshape(-1, 1)
-        y = np.array(self.Pred['Gender Key_ENC']).reshape(-1, 1)
+        X = np.array(self.Pred['Entry']).reshape(-1, 1)
+        y = np.array(self.Pred['Female']).reshape(-1, 1)
 
         # print(X)
         #       y = self.diversity["Gender Key_ENC"]
@@ -97,11 +98,6 @@ class RamyaCSVParser(object):
 
 
 
-
-
-
-
-
 if __name__ == '__main__':
-    dp = RamyaCSVParser()
+    dp = Ramya_Liner_Regression()
 
