@@ -1,29 +1,65 @@
-from core.module import Module
 import dash_core_components as dcc
-from dash import Dash, dash
+import dash_html_components as html
+import pandas as pd
+from dash import dash
+from pathlib import Path
+import os
+from dash.dependencies import Input, Output
+from core.module import Module
+from modules.attrition_module.MapPage import MapPage
+from modules.attrition_module.TrendsPage import TrendsPage
+from modules.attrition_module.UnitedStatesMapView import UnitedStatesMapView
+from util.utility import Utility
+import numpy as np
+
+ut = Utility('AttritionModule')
+
 
 class AttritionModule(Module):
     def __init__(self):
         super().__init__()
+        # Set Pages
+        self.pages = []
+
+        self.pages.append(MapPage())
+        self.pages.append(TrendsPage())
 
     def get_view(self):
-        return dcc.Graph(
-            id='example-graph',
-            figure={
-                'data': [
-                    {'x': [1, 2, 3], 'y': [4, 1, 2], 'type': 'bar', 'name': 'SF'},
-                    {'x': [1, 2, 3], 'y': [2, 4, 5], 'type': 'bar', 'name': u'Montréal'},
+
+        # Set the tabs array
+        tabs = []
+        for page in self.pages:
+            tabs.append({'label': page.get_page_name(), 'value': page.get_page_id()})
+            ut.context(tabs.__str__())
+
+        return html.Div([
+            html.Div(
+                [
+                    dcc.Tabs(
+                        tabs=tabs,
+                        value=tabs[0].get('value'),
+                        id='module_tabs',
+
+                    ),
                 ],
-                'layout': {
+                style={
+                    'width': '100%',
+                    'fontFamily': 'Sans-Serif',
+                    'color': 'black',
+                    'background-color': 'red',
+                    'margin-left': 'auto',
+                    'margin-right': 'auto',
+                },
 
-                    'title': 'Josiah\'s Dash Data Visualization'
-
-                }
-            }
-        )
+            ),
+            html.Div(
+                html.Div(id='tab_module_output'),
+                style={'width': '100%', 'float': 'right'}
+            )
+        ])
 
     def get_module_name(self):
-        return "Attrition!!"
+        return "Attrition"
 
     def get_tab_value(self):
         return "tab_attrition"
@@ -32,4 +68,11 @@ class AttritionModule(Module):
         return "hello"
 
     def set_callback_function(self, app=dash.Dash()):
-        pass
+        for page in self.pages:
+            page.set_callbacks(app=app)
+
+        @app.callback(Output('tab_module_output', 'children'), [Input('module_tabs', 'value')])
+        def display_content(value):
+            for page in self.pages:
+                if page.get_page_id() == value:
+                    return page.get_view()

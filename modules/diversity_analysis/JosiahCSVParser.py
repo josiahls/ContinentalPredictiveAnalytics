@@ -1,5 +1,3 @@
-import typing
-
 import pandas as pd
 import os
 from util.utility import Utility
@@ -8,7 +6,6 @@ from pathlib import Path
 ut = Utility('JosiahCSVParser')
 
 
-# noinspection PyUnusedLocal,PyPep8Naming
 class JosiahCSVParser(object):
     """
     Loads and parses:

@@ -5,6 +5,7 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 import importlib
 import os
+
 from util.bcolors import bcolors as b
 from util.utility import Utility
 
@@ -74,46 +75,88 @@ if __name__ == '__main__':
         ut.context(tabs.__str__())
 
     # Set the layout from the modules
-    app.layout = html.Div(children=[
-        html.H1(children='Hello Dash'),
 
-        html.Div(children='''
-            Dash: A web application framework for Python.
-        '''),
+   ######
+    app_colors = {
+        'background': '#0C0F0A',
+        'text': '#FFFFFF',
+        'sentiment-plot': '#41EAD4',
+        'volume-bar': '#FBFC74',
+        'someothercolor': '#FF206E',
+    }
+
+    app.layout = html.Div([
+        html.Div(
+            [
+                html.Img(
+                    src="http://www.continentaltire.com/sites/all/themes/continental/assets/images/print-logo.jpg",
+                    className='one columns',
+                    style={
+                        'height': '100',
+                        'width': '250',
+                        'float': 'left',
+                        'position': 'relative',
+                    },
+                ),
+                html.H1(
+                    'HR Predictive Analysis',
+                    # className='eight columns',
+                    className ='p-3 mb-2 bg-secondary text-white',
+                    style={'text-align': 'center', 'padding':'15px','height':'100'
+                           },
+                ),
+            ],
+            style={'height': '100','width': '100%',},
+        ),
+
+
+
         html.Div(
             [
                 dcc.Tabs(
                     tabs=tabs,
                     value=tabs[0].get('value'),
                     id='tabs',
+
                 ),
             ],
             style={
                 'width': '100%',
                 'fontFamily': 'Sans-Serif',
                 'color': 'black',
+                'background-color' :'red',
                 'margin-left': 'auto',
                 'margin-right': 'auto',
-            }
+            },
+
         ),
+
         html.Div(
             html.Div(id='tab-output'),
             style={'width': '100%', 'float': 'right'}
         )
-    ])
+
+        ],
+
+    )
+
+
+#####vyvy
 
 
     @app.callback(Output('tab-output', 'children'), [Input('tabs', 'value')])
     def display_content(value):
-        for analysis_module in LIST_OF_MODULE_INSTANCES:
-            if analysis_module.get_tab_value() == value:
-                return analysis_module.get_view()
+            for analysis_module in LIST_OF_MODULE_INSTANCES:
+                if analysis_module.get_tab_value() == value:
+                    return analysis_module.get_view()
 
     # Add other callbacks
     for analysis_module in LIST_OF_MODULE_INSTANCES:
-        analysis_module.set_callback_function(app=app)
+            analysis_module.set_callback_function(app=app)
 
     # Loading screen CSS
+    # app.css.append_css({"external_url": "https://josiahls.github.io/loading_screen.css"})
+    app.css.append_css({"external_url": "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"})
     app.css.append_css({"external_url": "https://josiahls.github.io/loading_screen.css"})
     app.server.run(debug=True, threaded=True)
 
