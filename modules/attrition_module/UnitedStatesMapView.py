@@ -19,11 +19,14 @@ class UnitedStatesMapView(View):
         self.name = name
         self.unique_values = {}
         self.global_unique_values = {}
+        self.date_range = []
         self.current_category = str
         self.data = data
         self.filtered_values = pd.DataFrame
+        self.color_scale = [[0, "rgb(5, 10, 172)"], [0.35, "rgb(40, 60, 190)"], [0.5, "rgb(70, 100, 245)"], \
+                            [0.6, "rgb(90, 120, 245)"], [0.7, "rgb(106, 137, 247)"], [1, "rgb(220, 220, 220)"]]
 
-    def setFields(self, category=None, unique_values=None):
+    def setFields(self, category=None, unique_values=None, date_slider=None):
         # Set the categories
         if category is None:
             category = self.current_category
@@ -46,15 +49,25 @@ class UnitedStatesMapView(View):
             self.global_unique_values = unique_values
             self.unique_values = self.global_unique_values[category]
 
+        # Set the dates field
+        if date_slider is None:
+            date_slider = self.date_range
+        else:
+            self.date_range = date_slider
+
         # Set the filtered values
         # Filter the rows by whether they contain the values
         # specified
-        self.filtered_values = self.data[
-            self.data[category].isin(self.unique_values)]
+        self.filtered_values = self.data[self.data[category].isin(self.unique_values)]
+        self.filtered_values = self.filtered_values.iloc[
+            pd.DatetimeIndex(self.filtered_values['Hire.Date']).year.values < max(self.date_range)]
+        self.filtered_values = self.filtered_values.iloc[
+            pd.DatetimeIndex(self.filtered_values['Hire.Date']).year.values > min(self.date_range)]
 
     def get_view(self):
         # For each unique value, get the max value for normalizing
-        normalized_max = pd.DataFrame(self.filtered_values).groupby(['Latitude', 'Longitude'])[self.current_category].count().max()
+        normalized_max = pd.DataFrame(self.filtered_values).groupby(['Latitude', 'Longitude'])[
+            self.current_category].count().max()
 
         locations = []
         for unique_value in self.unique_values:
@@ -86,15 +99,17 @@ class UnitedStatesMapView(View):
                         size=value_groups[self.current_category].iloc[i] / normalized_max * 100,
                         opacity=0.8,
                         reversescale=True,
-                        autocolorscale=False,
+                        colorscale=self.color_scale,
                         symbol='circle',
                         line=dict(
                             width=1,
                             color='rgba(102, 102, 102)'
                         ),
                     ),
-                    name=str(value_groups['Location.Name'].iloc[i]) + ' ' +
-                         '{} units<br>'.format(value_groups[self.current_category].iloc[i]) + ' {}'.format(unique_value)
+                    name=str(str(str(str(value_groups['Location.Name'].iloc[i]).split(',')[0])) + ' ' +
+                             str(str(value_groups['Location.Name'].iloc[i]).split(',')[1]) + ' ' + \
+                             str('{} '.format(value_groups[self.current_category].iloc[i])) + ' {} (s)'.format(
+                        unique_value))
                 )
                 ut.context(str(value_groups['Location.Name'].iloc[[i]]))
                 locations.append(location)
@@ -123,9 +138,10 @@ class UnitedStatesMapView(View):
 
     def set_callbacks(self, app=dash.Dash()):
         @app.callback(Output(self.get_graph_id(), 'figure'), [Input('category_dropdown', 'value'),
-                                                                Input('unique_value_dropdown', 'value')])
-        def update_chart(category_dropdown, unique_value_dropdown):
-            self.setFields(category=category_dropdown, unique_values=unique_value_dropdown)
+                                                              Input('unique_value_dropdown', 'value'),
+                                                              Input('date_slider', 'value')])
+        def update_chart(category_dropdown, unique_value_dropdown, date_slider):
+            self.setFields(category=category_dropdown, unique_values=unique_value_dropdown, date_slider=date_slider)
             return self.get_view()
 
     def get_graph_id(self):

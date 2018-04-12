@@ -6,6 +6,7 @@ from pathlib import Path
 import os
 from dash.dependencies import Input, Output
 from core.module import Module
+from modules.attrition_module.DateSliderView import DateSlider
 from modules.attrition_module.UnitedStatesMapView import UnitedStatesMapView
 from util.utility import Utility
 import numpy as np
@@ -13,6 +14,7 @@ import numpy as np
 from core import Page
 
 ut = Utility('MapPage')
+
 
 class MapPage(Page):
     def __init__(self):
@@ -68,12 +70,15 @@ class MapPage(Page):
 
         # Set views
         self.unitedStatesMapView = UnitedStatesMapView(data=self.master_csv['local'])
+        self.range_slider = DateSlider()
 
         self.views = []
         self.views.append(self.unitedStatesMapView)
 
     def get_view(self):
-        self.unitedStatesMapView.setFields(category=self.categories[2], unique_values=self.unique_values)
+        self.unitedStatesMapView.setFields(category=self.categories[2], unique_values=self.unique_values,
+                                           date_slider=set(self.date_range))
+        self.range_slider.set_fields(self.date_range)
 
         return html.Div([
             html.Div([
@@ -108,30 +113,14 @@ class MapPage(Page):
                 options=[{'label': i, 'value': i} for i in ['Numeric', 'Ratio']],
                 value='Numeric',
             ),
+            self.range_slider.get_view(),
             dcc.Graph(id='diversity_map_graph', figure=self.unitedStatesMapView.get_view()),
-            html.Div([
-                html.H3('Year'),
-                dcc.RangeSlider(
-                    id='my-range-slider',
-                    min=min(self.date_range),
-                    max=max(self.date_range),
-                    value=[min(self.date_range), max(self.date_range)],
-                    step=None,
-                    marks={
-                        str(year): {'label': str(year),
-                                    'style': {'color': 'white', 'background-color': 'rgb(135,206,250)'}}
-                        for year in set(self.date_range)}, ),
 
-            ], style={'margin-left': '10px', 'width': '95%', 'align': 'center'}),
         ])
 
     def set_callbacks(self, app=dash.Dash()):
-        self.unitedStatesMapView.set_callbacks(app)
-        @app.callback(Output('category_dropdown', 'figure'), [Input('category_dropdown', 'value'),
-                                                              Input('unique_value_dropdown', 'value')])
-        def update_chart(category_dropdown, unique_value_dropdown):
-            self.unitedStatesMapView.setFields(category=category_dropdown, unique_values=unique_value_dropdown)
-            return self.unitedStatesMapView.get_view()
+        for view in self.views:
+            view.set_callbacks(app)
 
     def get_page_id(self):
         return 'page_map'
