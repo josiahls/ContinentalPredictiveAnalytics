@@ -115,7 +115,7 @@ if __name__ == '__main__':
             [
                 dcc.Tabs(
                     tabs=tabs,
-                    value=tabs[0].get('value'),
+                    value=tabs[1].get('value'),
                     id='tabs',
 
                 ),
@@ -141,9 +141,6 @@ if __name__ == '__main__':
     )
 
 
-#####vyvy
-
-
     @app.callback(Output('tab-output', 'children'), [Input('tabs', 'value')])
     def display_content(value):
             for analysis_module in LIST_OF_MODULE_INSTANCES:
@@ -157,7 +154,7 @@ if __name__ == '__main__':
     # Loading screen CSS
     # app.css.append_css({"external_url": "https://josiahls.github.io/loading_screen.css"})
     app.css.append_css({"external_url": "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"})
-    app.css.append_css({"external_url": "https://josiahls.github.io/loading_screen.css"})
+    #app.css.append_css({"external_url": "https://josiahls.github.io/loading_screen.css"})
     app.server.run(debug=True, threaded=True)
 
 
