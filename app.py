@@ -142,10 +142,11 @@ if __name__ == '__main__':
 
 
     @app.callback(Output('tab-output', 'children'), [Input('tabs', 'value')])
-    def display_content(value):
-            for analysis_module in LIST_OF_MODULE_INSTANCES:
-                if analysis_module.get_tab_value() == value:
-                    return analysis_module.get_view()
+    def display_content(tabs):
+        ut.context("Callback executing")
+        for analysis_module in LIST_OF_MODULE_INSTANCES:
+            if analysis_module.get_tab_value() == tabs:
+                return analysis_module.get_view()
 
     # Add other callbacks
     for analysis_module in LIST_OF_MODULE_INSTANCES:

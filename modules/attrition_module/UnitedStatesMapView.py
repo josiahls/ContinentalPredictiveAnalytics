@@ -141,6 +141,7 @@ class UnitedStatesMapView(View):
                                                               Input('unique_value_dropdown', 'value'),
                                                               Input('date_slider', 'value')])
         def update_chart(category_dropdown, unique_value_dropdown, date_slider):
+            ut.context("Callback is executing")
             self.setFields(category=category_dropdown, unique_values=unique_value_dropdown, date_slider=date_slider)
             return self.get_view()
 

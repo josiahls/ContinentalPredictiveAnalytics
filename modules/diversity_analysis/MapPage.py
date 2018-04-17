@@ -7,7 +7,6 @@ import os
 from dash.dependencies import Input, Output
 from core.module import Module
 from modules.diversity_analysis.DateSliderView import DateSlider
-from modules.diversity_analysis.UnitedStatesMapView import UnitedStatesMapView
 from util.utility import Utility
 import numpy as np
 

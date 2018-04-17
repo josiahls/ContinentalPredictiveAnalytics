@@ -20,7 +20,6 @@ class DiversityModule(Module):
         # Set Pages
         self.pages = []
 
-        self.pages.append(MapPage())
         self.pages.append(TrendsPage())
 
     def get_view(self):
@@ -71,7 +70,8 @@ class DiversityModule(Module):
             page.set_callbacks(app=app)
 
         @app.callback(Output('tab_module_diversity_output', 'children'), [Input('module_diversity_tabs', 'value')])
-        def display_content(value):
+        def display_content(module_diversity_tabs):
+            ut.context("Callback is executing")
             for page in self.pages:
-                if page.get_page_id() == value:
+                if page.get_page_id() == module_diversity_tabs:
                     return page.get_view()
