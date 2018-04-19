@@ -33,7 +33,7 @@ class Ramya_ARIMA_MSE_Coordinates(object):
 
         self.Pred['Entry'] = self.Pred['Entry'].apply(lambda x: x.strftime('%Y'))
 
-        Gender_list = range(0, 2)
+        # = range(0, 2)
 
         self.df = self.Pred.groupby(['Entry', 'Gender Key']).count()  # Grouping the Gender based on the month-year
 
