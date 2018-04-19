@@ -21,7 +21,6 @@ class AttritionModule(Module):
         self.pages = []
 
         self.pages.append(MapPage())
-        self.pages.append(TrendsPage())
 
     def get_view(self):
 
