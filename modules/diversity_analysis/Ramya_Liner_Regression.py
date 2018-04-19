@@ -11,7 +11,6 @@ from sklearn import metrics
 from matplotlib import pyplot as plt
 
 
-
 # Cross validation with Linear Regression to check the accuracy
 
 class Ramya_Liner_Regression(object):
@@ -22,15 +21,15 @@ class Ramya_Liner_Regression(object):
 
         self.Pred = pd.read_excel(self.data_workspace + 'ARIMA_Female.xlsx', encoding='ISO-8859-1')
 
-        #print(self.Pred.head())
+        # print(self.Pred.head())
 
-        #self.Years_based_columns = ['Entry','Gender Key','Latitude','Longitude','Hire Year'];
+        # self.Years_based_columns = ['Entry','Gender Key','Latitude','Longitude','Hire Year'];
 
-        #self.Pred['Entry'] = pd.to_datetime(self.Pred['Entry'], format='%Y')
+        # self.Pred['Entry'] = pd.to_datetime(self.Pred['Entry'], format='%Y')
 
-        #my_date = pd.to_datetime(date, format='%Y%m%d')
+        # my_date = pd.to_datetime(date, format='%Y%m%d')
 
-        #self.Pred['Entry'] = pd.to_string(self.Pred['Entry'])
+        # self.Pred['Entry'] = pd.to_string(self.Pred['Entry'])
 
         """ print(self.Pred.head())
 
@@ -97,7 +96,5 @@ class Ramya_Liner_Regression(object):
         print('Score:', model.score(X_test, y_test))
 
 
-
 if __name__ == '__main__':
     dp = Ramya_Liner_Regression()
-

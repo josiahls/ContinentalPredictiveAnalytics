@@ -139,7 +139,7 @@ class ARIMA_Coordinates(object):
             location_set = pd.DataFrame(entries, columns=columns)
             self.Pred = self.Pred.append(location_set)
 
-        pd.DataFrame(self.Pred).to_csv('parsed_location_csv')
+        pd.DataFrame(self.Pred).to_csv('parsed_location.csv')
 
 
 if __name__ == '__main__':

@@ -5,7 +5,6 @@ from util.utility import Utility
 from pathlib import Path
 from pandas import datetime
 
-
 from pandas import Series
 from matplotlib import pyplot
 from pandas.plotting import autocorrelation_plot
@@ -13,6 +12,7 @@ from statsmodels.tsa.arima_model import ARIMA
 from pandas import DataFrame
 from sklearn.metrics import mean_squared_error
 import warnings
+
 warnings.filterwarnings("ignore")
 
 
@@ -35,8 +35,6 @@ class Ramya_ARIMA_MSE_Coordinates(object):
 
         Gender_list = range(0, 2)
 
-
-
         self.df = self.Pred.groupby(['Entry', 'Gender Key']).count()  # Grouping the Gender based on the month-year
 
         self.df1 = self.df.unstack('Gender Key')  # Display Gender values in seperate columns
@@ -49,14 +47,9 @@ class Ramya_ARIMA_MSE_Coordinates(object):
 
         self.df1.drop(self.df1.index[:23], inplace=True)
 
-
         self.df1.drop(self.df1.columns[0], axis=1, inplace=True)
 
         print(self.df1.head())
-
-
-
-
 
         X = self.df1.values
         size = int(len(X) * 0.67)
@@ -79,8 +72,6 @@ class Ramya_ARIMA_MSE_Coordinates(object):
         pyplot.plot(predictions, color='red')
         pyplot.show()
 
-
-
         # evaluate an ARIMA model for a given order (p,d,q)
         def evaluate_arima_model(X, arima_order):
             # prepare training dataset
@@ -98,9 +89,6 @@ class Ramya_ARIMA_MSE_Coordinates(object):
             # calculate out of sample error
             error = mean_squared_error(test, predictions)
             return error
-
-
-
 
         # evaluate an ARIMA model for a given order (p,d,q)
         def evaluate_arima_model(X, arima_order):
@@ -142,8 +130,6 @@ class Ramya_ARIMA_MSE_Coordinates(object):
         q_values = range(0, 3)
         warnings.filterwarnings("ignore")
         evaluate_models(self.df1.values, p_values, d_values, q_values)
-
-
 
 
 if __name__ == '__main__':

@@ -7,7 +7,6 @@ import os
 from dash.dependencies import Input, Output
 from core.module import Module
 from modules.attrition_module.MapPage import MapPage
-from modules.attrition_module.TrendsPage import TrendsPage
 from modules.attrition_module.UnitedStatesMapView import UnitedStatesMapView
 from util.utility import Utility
 import numpy as np
@@ -72,7 +71,8 @@ class AttritionModule(Module):
             page.set_callbacks(app=app)
 
         @app.callback(Output('tab_module_output', 'children'), [Input('module_tabs', 'value')])
-        def display_content(value):
+        def display_content(module_tabs):
+            ut.context("Callback is executing")
             for page in self.pages:
-                if page.get_page_id() == value:
+                if page.get_page_id() == module_tabs:
                     return page.get_view()

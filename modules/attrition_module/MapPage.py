@@ -114,7 +114,7 @@ class MapPage(Page):
                 value='Numeric',
             ),
             self.range_slider.get_view(),
-            dcc.Graph(id='diversity_map_graph', figure=self.unitedStatesMapView.get_view()),
+            dcc.Graph(id='attrition_map_graph', figure=self.unitedStatesMapView.get_view()),
 
         ])
 
