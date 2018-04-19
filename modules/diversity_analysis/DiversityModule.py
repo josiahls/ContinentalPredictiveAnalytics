@@ -34,7 +34,7 @@ class DiversityModule(Module):
 
     def get_view(self):
         test_trace = pd.DataFrame()
-        test_trace['numeric_axis'] = [i for i in range(0, 100, 5)]
+        test_trace['numeric_axis'] = [i for i in range(2010, 2025, 1)]
 
 
         # test_trace = go.Scatter(x=[i for i in range(100)],
@@ -47,66 +47,71 @@ class DiversityModule(Module):
         )]
 
         layout = dict(
-            title='Diversity over time)',
+            title='Diversity Map',
             colorbar=True,
             geo=dict(
                 scope='usa',
                 projection=dict(type='albers usa'),
                 showland=True,
-                landcolor="rgb(250, 250, 250)",
-                subunitcolor="rgb(217, 217, 217)",
+                # landcolor="rgb(250, 250, 250)",
+                landcolor="rgb(105,105,105)",
+                # subunitcolor="rgb(217, 217, 217)",
+                subunitcolor="white",
                 countrycolor="rgb(217, 217, 217)",
                 countrywidth=0.5,
                 subunitwidth=0.5
             ),
-            height=600
+            height=800,
+
         )
 
         fig = dict(data=data, layout=layout)
 
         return html.Div([
             html.Div([
-                html.H3('drop down values'),
-                dcc.Dropdown(
-                    id='crossfilter-xaxis-column',
-                    options=[{'label': i, 'value': i} for i in ['female', 'male']],
-                    value='female'
-                ),
-                html.H3('display units'),
-                dcc.RadioItems(
-                    id='crossfilter-xaxis-type',
-                    options=[{'label': i, 'value': i} for i in ['Numeric', 'Ratio']],
-                    value='Numeric',
-                    labelStyle={'display': 'inline-block'}
-                ),
-                html.H3('text values'),
-                dcc.Dropdown(
-                    options=[{'label': i, 'value': i} for i in ['value', 'other value', 'other other value']],
-                    multi=True,
-                    value="value"
-                )
-            ],
-            style={'width': '49%', 'display': 'inline-block'}),
+                html.Div([
+                    html.H3('Gender'),
+                    dcc.Dropdown(
+                        id='crossfilter-xaxis-column',
+                        options=[{'label': i, 'value': i} for i in ['female', 'male']],
+                        value='female'
+                    ),
+                ],
+                    style={'width': '49%', 'display': 'inline-block', 'padding' : '0px'}),
 
+                html.Div([
+
+                    html.H3('Values'),
+                    dcc.Dropdown(
+                        options=[{'label': i, 'value': i} for i in ['value', 'other value', 'other other value']],
+                        multi=True,
+                        value="value"
+                    ),
+                ],
+                    style={'width': '49%', 'display': 'inline-block', }),
+            ],                    style={'width': '100%', 'display': 'inline-block', },
+
+            ),
+
+            html.H3('Unit Options'),
+            dcc.RadioItems(
+                id='crossfilter-xaxis-type',
+                options=[{'label': i, 'value': i} for i in ['Numeric', 'Ratio']],
+                value='Numeric',
+                # labelStyle={'display': 'inline-block'}
+            ),
             dcc.Graph(id='diversity_map_graph', figure=fig),
             html.Div([
-                html.H3('lower bound'),
-                dcc.Slider(
-                    id='crossfilter-year--slider',
+                html.H3('Year'),
+                dcc.RangeSlider(
+                    id='my-range-slider',
                     min=test_trace['numeric_axis'].min(),
                     max=test_trace['numeric_axis'].max(),
-                    value=test_trace['numeric_axis'].max(),
+                    value=[test_trace['numeric_axis'].min(),test_trace['numeric_axis'].max()],
                     step=None,
-                    marks={str(year): str(year) for year in test_trace['numeric_axis'].unique()}),
-                html.H3('upper bound'),
-                dcc.Slider(
-                    id='crossfilter-year--slider',
-                    min=test_trace['numeric_axis'].min(),
-                    max=test_trace['numeric_axis'].max(),
-                    value=test_trace['numeric_axis'].min(),
-                    step=None,
-                    marks={str(year): str(year) for year in test_trace['numeric_axis'].unique()}),
-            ],style={'width': '49%', 'display': 'inline-block'}),
+                    marks={str(year): {'label': str(year),'style': {'color': 'white', 'background-color': 'rgb(135,206,250)'  }} for year in test_trace['numeric_axis'].unique()},),
+
+             ],style={'margin-left': '10px','width': '95%', 'align':'center'}),
         ])
 
     def set_callback_function(self, app=dash.Dash()):
