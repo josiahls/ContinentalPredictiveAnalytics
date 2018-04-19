@@ -106,13 +106,6 @@ class MapPage(Page):
             ], style={'width': '100%', 'display': 'inline-block', },
 
             ),
-
-            html.H3('Unit Options'),
-            dcc.RadioItems(
-                id='crossfilter-xaxis-type',
-                options=[{'label': i, 'value': i} for i in ['Numeric', 'Ratio']],
-                value='Numeric',
-            ),
             self.range_slider.get_view(),
             dcc.Graph(id='attrition_map_graph', figure=self.unitedStatesMapView.get_view()),
 
@@ -121,6 +114,10 @@ class MapPage(Page):
     def set_callbacks(self, app=dash.Dash()):
         for view in self.views:
             view.set_callbacks(app)
+
+        @app.callback(Output('unique_value_dropdown', 'options'), [Input('category_dropdown','value')])
+        def set_unqiue_values(category_dropdown):
+            return [{'label': i, 'value': i} for i in self.unique_values[category_dropdown]]
 
     def get_page_id(self):
         return 'page_map'
