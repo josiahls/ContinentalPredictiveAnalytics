@@ -33,7 +33,7 @@ class Ramya_ARIMA_MSE_Coordinates(object):
 
         self.Pred['Entry'] = self.Pred['Entry'].apply(lambda x: x.strftime('%Y'))
 
-        Gender_list = range(0, 2)
+        # = range(0, 2)
 
 
 
@@ -53,9 +53,6 @@ class Ramya_ARIMA_MSE_Coordinates(object):
         self.df1.drop(self.df1.columns[0], axis=1, inplace=True)
 
         print(self.df1.head())
-
-
-
 
 
         X = self.df1.values

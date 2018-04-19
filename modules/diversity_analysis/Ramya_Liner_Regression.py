@@ -7,8 +7,9 @@ from sklearn import datasets, linear_model
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn import metrics
+from matplotlib import pyplot
 
-from matplotlib import pyplot as plt
+
 
 
 
@@ -20,7 +21,7 @@ class Ramya_Liner_Regression(object):
         self.data_workspace = str(Path(__file__).parents[0])
         self.data_workspace += os.sep
 
-        self.Pred = pd.read_excel(self.data_workspace + 'ARIMA_Female.xlsx', encoding='ISO-8859-1')
+        self.Pred = pd.read_excel(self.data_workspace + 'RamyaCleanedDiversity.xlsx', encoding='ISO-8859-1')
 
         #print(self.Pred.head())
 
@@ -68,6 +69,40 @@ class Ramya_Liner_Regression(object):
 
         # target = pd.DataFrame(self.diversity.target, columns=["Gender Key_ENC"])"""
 
+        self.Years_based_columns = ['Entry', 'Gender Key', 'Latitude'];
+
+        self.Pred = self.Pred[self.Years_based_columns]
+
+
+
+        self.Pred['Entry'] = self.Pred['Entry'].apply(lambda x: x.strftime('%Y'))
+
+
+
+        self.df1 = self.Pred.groupby(['Entry']).count()  # Grouping the count based on the month-year
+
+
+
+        self.df1 = pd.DataFrame(self.df1, dtype='float')
+
+        self.df1.fillna(self.df1.mean(), inplace=True)
+
+        print(self.df1.head())
+
+        self.df1.drop(self.df1.index[:36], inplace=True)
+
+
+        #self.df1 = self.df1[self.df1.columns[i]]
+
+        # self.df1.drop(self.df1.columns[i], axis=1, inplace=True)
+
+        print(self.df1.tail(20))
+
+        X = self.df1.values
+
+
+
+
         X = np.array(self.Pred['Entry']).reshape(-1, 1)
         y = np.array(self.Pred['Female']).reshape(-1, 1)
 
@@ -90,9 +125,14 @@ class Ramya_Liner_Regression(object):
         model = lm.fit(X_train, y_train)
         predictions = lm.predict(X_test)
 
-        plt.scatter(y_test, predictions)
-        plt.xlabel('True Values')
-        plt.ylabel('Predictions')
+       # plt.scatter(y_test, predictions)
+       # plt.xlabel('True Values')
+        #plt.ylabel('Predictions')
+
+        pyplot.plot('True Values')
+        pyplot.plot('Predictions', color='red')
+        pyplot.show()
+
 
         print('Score:', model.score(X_test, y_test))
 

@@ -118,6 +118,7 @@ class ARIMA_Coordinates(object):
 
             history = [x for x in X]
             year = 1
+            output_dataframe = self.Pred
             for yhat in forecast:
                 inverted = inverse_difference(history, yhat)
                 print('Year %d: %f' % (year, inverted))
@@ -137,9 +138,9 @@ class ARIMA_Coordinates(object):
                 year += 1
 
             location_set = pd.DataFrame(entries, columns=columns)
-            self.Pred = self.Pred.append(location_set)
+            output_dataframe = self.Pred.append(location_set)
 
-        pd.DataFrame(self.Pred).to_csv('parsed_location_csv')
+        pd.DataFrame(output_dataframe).to_csv('parsed_location1_csv')
 
 
 if __name__ == '__main__':
