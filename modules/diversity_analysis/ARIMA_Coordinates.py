@@ -140,7 +140,9 @@ class ARIMA_Coordinates(object):
             location_set = pd.DataFrame(entries, columns=columns)
             output_dataframe = self.Pred.append(location_set)
 
+
         pd.DataFrame(output_dataframe).to_csv('parsed_location1_csv')
+
 
 
 if __name__ == '__main__':

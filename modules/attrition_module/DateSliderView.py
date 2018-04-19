@@ -41,7 +41,7 @@ class DateSlider(View):
                 min=min(self.date_range),
                 max=max(self.date_range),
                 value=[min(self.date_range), max(self.date_range)],
-                step=None,
+                step=2,
                 # marks={'1696': {'label': str(1696), 'style': {'color': 'white', 'background-color': is_future(1696)}}}
                 marks=get_marks()
             ),

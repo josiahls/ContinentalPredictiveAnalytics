@@ -23,8 +23,8 @@ class UnitedStatesMapView(View):
         self.current_category = str
         self.data = data
         self.filtered_values = pd.DataFrame
-        self.color_scale = [[0, "rgb(5, 10, 172)"], [0.35, "rgb(40, 60, 190)"], [0.5, "rgb(70, 100, 245)"], \
-                            [0.6, "rgb(90, 120, 245)"], [0.7, "rgb(106, 137, 247)"], [1, "rgb(220, 220, 220)"]]
+        self.color_scale = [[0, "rgb(5, 10, 40)"], [0.35, "rgb(5, 10, 80)"], [0.5, "rgb(5, 10, 120)"], \
+                            [0.6, "rgb(5, 10, 140)"], [0.7, "rgb(5, 10, 180)"], [1, "rgb(5, 10, 200)"]]
 
     def setFields(self, category=None, unique_values=None, date_slider=None):
         # Set the categories
@@ -115,7 +115,7 @@ class UnitedStatesMapView(View):
                 locations.append(location)
 
         layout = dict(
-            title='Diversity Map',
+            title='Attrition Map',
             colorbar=True,
             geo=dict(
                 scope='usa',
@@ -141,8 +141,9 @@ class UnitedStatesMapView(View):
                                                               Input('unique_value_dropdown', 'value'),
                                                               Input('date_slider', 'value')])
         def update_chart(category_dropdown, unique_value_dropdown, date_slider):
+            ut.context("Callback is executing")
             self.setFields(category=category_dropdown, unique_values=unique_value_dropdown, date_slider=date_slider)
             return self.get_view()
 
     def get_graph_id(self):
-        return str('diversity_map_graph')
+        return str('attrition_map_graph')
