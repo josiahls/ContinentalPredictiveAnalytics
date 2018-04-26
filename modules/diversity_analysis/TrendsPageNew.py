@@ -171,7 +171,7 @@ class TrendsPageNew(Page):
                         # Add the x and y, and convert the group nums to y
                         for group in self.plots[model][category][unique_value].groups:
                             # If the group is not in the range of values, skip
-                            if int(group) not in range(date_slider[0], date_slider[1]):
+                            if int(group) not in range(date_slider[0], date_slider[1] + 1):
                                 continue
 
                             x.append(group)
@@ -211,7 +211,7 @@ class TrendsPageNew(Page):
                         # Add the x and y, and convert the group nums to y
                         for group in self.plots[model][category][unique_value].groups:
                             # If the group is not in the range of values, skip
-                            if int(group) not in range(date_slider[0], date_slider[1]):
+                            if int(group) not in range(date_slider[0], date_slider[1]+1):
                                 continue
 
                             if current_year <= int(group):
