@@ -22,7 +22,7 @@ class DiversityModule(Module):
         # Set Pages
         self.pages = []
 
-        self.pages.append(TrendsPage())
+        # self.pages.append(TrendsPage())
         self.pages.append(TrendsPageNew())
 
     def get_view(self):
@@ -38,7 +38,7 @@ class DiversityModule(Module):
                 [
                     dcc.Tabs(
                         tabs=tabs,
-                        value=tabs[1].get('value'),
+                        value=tabs[0].get('value'),
                         id='module_diversity_tabs',
 
                     ),

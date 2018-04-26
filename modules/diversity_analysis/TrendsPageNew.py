@@ -141,6 +141,7 @@ class TrendsPageNew(Page):
                         x = []
                         y = []
                         name = unique_value
+                        has_forcast = False
 
                         # Add the x and y, and convert the group nums to y
                         for group in self.plots[model][category][unique_value].groups:
@@ -148,9 +149,12 @@ class TrendsPageNew(Page):
                             y.append(len(self.plots[model][category][unique_value].get_group(group).index))
                             # Add 'missing forecast' if the num of years
                             # is less than expected
-                            if current_year < int(group) - 2: # TODO check
-                                name = name + ': Missing forecast'
+                            if current_year <= int(group): # TODO check
+                                has_forcast = True
                                 break
+
+                        # Adding missing forecast if the has_forecast var is false
+                        name = name + ': Missing forecast' if not has_forcast else name
 
                         # Add Scatter plot to data
                         data.append(Scatter(
@@ -165,7 +169,7 @@ class TrendsPageNew(Page):
                         ))
 
                         # skip adding the forecast if there isnt one
-                        if str(name).lower().__contains__(': Missing forecast'):
+                        if not has_forcast:
                             index = index + 1 if index < len(colors) else 0
                             continue
 
@@ -174,7 +178,7 @@ class TrendsPageNew(Page):
                         y = []
                         # Add the x and y, and convert the group nums to y
                         for group in self.plots[model][category][unique_value].groups:
-                            if current_year <= int(group) - 2:
+                            if current_year <= int(group):
                                 x.append(group)
                                 y.append(len(self.plots[model][category][unique_value].get_group(group).index))
 
