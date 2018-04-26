@@ -75,8 +75,6 @@ if __name__ == '__main__':
         ut.context(tabs.__str__())
 
     # Set the layout from the modules
-
-   ######
     app_colors = {
         'background': '#0C0F0A',
         'text': '#FFFFFF',
@@ -101,15 +99,12 @@ if __name__ == '__main__':
                 html.H1(
                     'HR Predictive Analysis',
                     # className='eight columns',
-                    className ='p-3 mb-2 bg-secondary text-white',
-                    style={'text-align': 'center', 'padding':'15px','height':'100'
-                           },
+                    className='p-3 mb-2',
+                    style={'text-align': 'center', 'padding': '15px', 'height': '100',
+                           'background-color': 'rgb(0, 0, 0)', 'color': 'rgb(254, 165, 1)'},
                 ),
-            ],
-            style={'height': '100','width': '100%',},
+            ], style={'height': '100', 'width': '100%','color': 'black', 'background-color': 'rgb(0, 0, 0)'},
         ),
-
-
 
         html.Div(
             [
@@ -124,7 +119,7 @@ if __name__ == '__main__':
                 'width': '100%',
                 'fontFamily': 'Sans-Serif',
                 'color': 'black',
-                'background-color' :'red',
+                'background-color': 'black',
                 'margin-left': 'auto',
                 'margin-right': 'auto',
             },
@@ -133,10 +128,10 @@ if __name__ == '__main__':
 
         html.Div(
             html.Div(id='tab-output'),
-            style={'width': '100%', 'float': 'right'}
+            style={'width': '100%', 'float': 'right','color': 'black', 'background-color': 'rgb(0, 0, 0)'}
         )
 
-        ],
+    ], style={'width': '100%', 'float': 'right', 'color': 'black','background-color': 'rgb(0, 0, 0)'}
 
     )
 
@@ -148,15 +143,13 @@ if __name__ == '__main__':
             if analysis_module.get_tab_value() == tabs:
                 return analysis_module.get_view()
 
+
     # Add other callbacks
     for analysis_module in LIST_OF_MODULE_INSTANCES:
-            analysis_module.set_callback_function(app=app)
+        analysis_module.set_callback_function(app=app)
 
     # Loading screen CSS
     # app.css.append_css({"external_url": "https://josiahls.github.io/loading_screen.css"})
     app.css.append_css({"external_url": "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"})
-    #app.css.append_css({"external_url": "https://josiahls.github.io/loading_screen.css"})
+    # app.css.append_css({"external_url": "https://josiahls.github.io/loading_screen.css"})
     app.server.run(debug=True, threaded=True)
-
-
-

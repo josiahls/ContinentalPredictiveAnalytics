@@ -1,6 +1,6 @@
 import dash
 import pandas as pd
-import datetime as dt
+import datetime
 
 from core import View
 import dash_core_components as dcc
@@ -22,15 +22,24 @@ class DateSlider(View):
 
     def get_view(self):
         def is_future(year):
-            if year > dt.datetime.now().year:
-                return 'rgb(0,250,0)'
+            if year > datetime.datetime.now().year - 2:
+                return 'rgb(254, 165, 1)'
             else:
-                return 'rgb(135,206,250)'
+                return 'rgb(136, 142, 147)'
 
         def get_marks():
             year_marks = {}
+            index = 0
+            step = 2
             for year in set(self.date_range):
-                year_marks[str(year)] = {'label': str(year),'style': {'color': 'white', 'background-color': is_future(year)}}
+                if index % step == 0:
+                    year_marks[str(year)] = {'label': str(year), 'style': {'color': 'white', 'width': '30px',
+                                                                           'background-color': is_future(year)}}
+                else:
+                    year_marks[str(year)] = {'label': '',
+                                             'style': {'color': 'white', 'width': '30px',
+                                                       'background-color': is_future(year)}}
+                index += 1
             return year_marks
 
 
@@ -46,7 +55,7 @@ class DateSlider(View):
                 marks=get_marks()
             ),
 
-        ], style={'margin-bottom': '20px', 'width': '95%', 'align': 'center'})
+        ], style={'margin-bottom': '20px','margin-left': '20px', 'width': '95%', 'align': 'center', 'color': 'rgb(254, 165, 1)'})
 
     def set_callbacks(self, app=dash.Dash()):
         pass

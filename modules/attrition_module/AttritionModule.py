@@ -54,7 +54,7 @@ class AttritionModule(Module):
                 html.Div(id='tab_module_output'),
                 style={'width': '100%', 'float': 'right'}
             )
-        ])
+        ], style={'background-color': 'rgb(0, 0, 0)'})
 
     def get_module_name(self):
         return "Attrition"

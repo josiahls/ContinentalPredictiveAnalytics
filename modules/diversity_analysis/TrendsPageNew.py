@@ -29,9 +29,9 @@ class TrendsPageNew(Page):
         self.data_workspace = str(Path(__file__).parents[0])
         self.data_workspace += os.sep
 
-        self.csv_locations = {'Linear Regression': ['parsed_gender_regression.csv',
-                                                    'parsed_EmployeeSubgroup_regression.csv',
-                                                    'parsed_city_regression.csv'],
+        self.csv_locations = {'Regression Analysis': ['parsed_gender_regression.csv',
+                                                      'parsed_EmployeeSubgroup_regression.csv',
+                                                      'parsed_city_regression.csv'],
                               'Arima': ['parsed_gender_ARIMA.csv', 'parsed_employee_subgroup_ARIMA.csv',
                                         'parsed_city_ARIMA.csv'],
                               'Original Data': ['Original_Dataset_GenderKey.csv',
@@ -83,7 +83,7 @@ class TrendsPageNew(Page):
             html.Div([
                 dcc.Dropdown(
                     id='diversity_model',
-                    options=[{'label': i, 'value': i} for i in ['Original Data', 'Arima', 'Linear Regression']],
+                    options=[{'label': i, 'value': i} for i in ['Original Data', 'Arima', 'Regression Analysis']],
                     multi=True,
                     value='Arima'
                 ),
@@ -116,7 +116,7 @@ class TrendsPageNew(Page):
             ], style={'margin-bottom': '20px', 'margin-left': '20px', 'width': '95%', 'align': 'center'}),
 
             dcc.Graph(id='diversity_trends')
-        ])
+        ], style={'margin-top': '10px','margin-bottom': '100px', 'color': 'black','background-color': 'rgb(0, 0, 0)'})
 
     def set_callbacks(self, app=dash.Dash()):
         @app.callback(Output('diversity_unique_value_dropdown', 'options'),
@@ -152,6 +152,13 @@ class TrendsPageNew(Page):
             if type(date_slider) is str:
                 date_slider = [date_slider]
 
+            # If original data is in the list of models to show
+            # then put it in back so that the final color
+            # is the original data set color
+            if 'Original Data' in diversity_model:
+                diversity_model.remove('Original Data')
+                diversity_model.append('Original Data')
+
             for model in diversity_model:
                 for category in diversity_category:
                     for unique_value in diversity_unique_value_dropdown:
@@ -182,7 +189,10 @@ class TrendsPageNew(Page):
                         data.append(Scatter(
                             x=x,
                             y=y,
-                            name=str(model) + name,
+                            name=str(model) + ' ' + name,
+                            textfont=dict(
+                                color='rgb(254, 165, 1)',
+                            ),
                             mode='lines',
                             connectgaps=True,
                             line=dict(
@@ -212,6 +222,9 @@ class TrendsPageNew(Page):
                             x=x,
                             y=y,
                             name=str(model) + ' ' + unique_value + ' forecast',
+                            textfont=dict(
+                                color='rgb(254, 165, 1)',
+                            ),
                             mode='lines+markers',
                             connectgaps=True,
                             line=dict(
@@ -220,15 +233,34 @@ class TrendsPageNew(Page):
                         ))
 
                         index = index + 1 if index < len(colors) else 0
-            return {
-                'data': data
-            }
+            return Figure(data=data, layout=Layout(
+                        paper_bgcolor='rgba(0,0,0,0)',
+                        plot_bgcolor='rgba(0,0,0,0)',
+                        legend=dict(
+                            traceorder='normal',
+                            font=dict(
+                                color='rgb(255, 255, 255)'
+                            ),
+                        ),
+                        xaxis=dict(
+                            tickfont=dict(
+                                color='white'
+                            ),
+                        ),
+                        yaxis=dict(
+                            tickfont=dict(
+                                color='white'
+                            ),
+                        )
+                    )
+                )
+
 
     def is_future(self, year):
         if year > datetime.datetime.now().year - 2:
-            return 'rgb(0,250,0)'
+            return 'rgb(254, 165, 1)'
         else:
-            return 'rgb(135,206,250)'
+            return 'rgb(136, 142, 147)'
 
     def get_marks(self, dates=list(), step=2):
         dates = sorted(dates)
@@ -249,4 +281,4 @@ class TrendsPageNew(Page):
         return 'page__diversity_trends_new'
 
     def get_page_name(self):
-        return 'Trends'
+        return 'Forecasts'

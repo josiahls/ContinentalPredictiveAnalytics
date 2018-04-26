@@ -65,6 +65,7 @@ class UnitedStatesMapView(View):
             pd.DatetimeIndex(self.filtered_values['Hire.Date']).year.values > min(self.date_range)]
 
     def get_view(self):
+        mapbox_access_token='pk.eyJ1IjoieXBlc3N0IiwiYSI6ImNqYW16cGkydzM5dWczM21odzY2b3BwZTcifQ.AWFR5CO9Buv-pLVZ_HixTw'
         # For each unique value, get the max value for normalizing
         normalized_max = pd.DataFrame(self.filtered_values).groupby(['Latitude', 'Longitude'])[
             self.current_category].count().max()
@@ -88,14 +89,18 @@ class UnitedStatesMapView(View):
                     continue
 
                 location = dict(
-                    type='scattergeo',
+                    type='scattermapbox',
                     locationmode='USA-states',
                     lon=value_groups['Longitude'].iloc[[i]],
                     lat=value_groups['Latitude'].iloc[[i]],
                     text=str(self.current_category) + ' - {}'.format(unique_value) + ': ' +
                          '{} units<br>'.format(value_groups[self.current_category].iloc[i]),
+                    textfont=dict(
+                        color='rgb(254, 165, 1)',
+                    ),
                     mode='markers',
                     marker=dict(
+                        color='rgb(254, 165, 1)',
                         size=value_groups[self.current_category].iloc[i] / normalized_max * 100,
                         opacity=0.8,
                         reversescale=True,
@@ -109,14 +114,29 @@ class UnitedStatesMapView(View):
                     name=str(str(str(str(value_groups['Location.Name'].iloc[i]).split(',')[0])) + ' ' +
                              str(str(value_groups['Location.Name'].iloc[i]).split(',')[1]) + ' ' + \
                              str('{} '.format(value_groups[self.current_category].iloc[i])) + ' {} (s)'.format(
-                        unique_value))
+                        unique_value)),
+                    namefont=dict(
+                        color='rgb(254, 165, 1)',
+                    ),
                 )
                 ut.context(str(value_groups['Location.Name'].iloc[[i]]))
                 locations.append(location)
 
         layout = dict(
             title='Attrition Map',
+            titlefont=dict(
+                color='rgb(254, 165, 1)',
+            ),
+            # color ='rgb(254, 165, 1)'
+            legend=dict(
+                traceorder='normal',
+                font=dict(
+                    color='rgb(255, 255, 255)'
+                ),
+            ),
             colorbar=True,
+            plot_bgcolor="#191A1A",
+            paper_bgcolor="#191A1A",
             geo=dict(
                 scope='usa',
                 projection=dict(type='albers usa'),
@@ -130,6 +150,16 @@ class UnitedStatesMapView(View):
                 subunitwidth=0.5
             ),
             height=800,
+
+            mapbox=dict(
+                accesstoken=mapbox_access_token,
+                style="dark",
+                center=dict(
+                    lon=-90,
+                    lat=40,
+                ),
+                zoom=5,
+            ),
 
         )
 
