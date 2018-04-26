@@ -32,8 +32,8 @@ class TrendsPageNew(Page):
         self.csv_locations = {'Linear Regression': ['parsed_gender_regression.csv',
                                                     'parsed_EmployeeSubgroup_regression.csv',
                                                     'parsed_city_regression.csv'],
-                              'Arima': ['parsed_gender_2016.csv', 'parsed_employee_subgroup_2016.csv',
-                                        'parsed_city_2016.csv'],
+                              'Arima': ['parsed_gender_ARIMA.csv', 'parsed_employee_subgroup_ARIMA.csv',
+                                        'parsed_city_ARIMA.csv'],
                               'Original Data': ['Original_Dataset_GenderKey.csv',
                                                 'Original_Dataset_EmployeeSubgroup.csv',
                                                 'Original_Dataset_City.csv']
@@ -62,8 +62,9 @@ class TrendsPageNew(Page):
                 # Generate the unique values
                 pre_plots[model][category] = {}
                 for unique_value in self.master[model][csv][category].unique():
-                    #ut.context(model + " " + str(unique_value))
-                    pre_plots[model][category][unique_value] = self.master[model][csv][self.master[model][csv][category] == unique_value]
+                    # ut.context(model + " " + str(unique_value))
+                    pre_plots[model][category][unique_value] = self.master[model][csv][
+                        self.master[model][csv][category] == unique_value]
 
         # Group the plots by date:
         self.plots = {}
@@ -73,9 +74,9 @@ class TrendsPageNew(Page):
                 self.plots[model][category] = {}
                 for unique_value in pre_plots[model][category]:
                     self.plots[model][category][unique_value] = pre_plots[model][category][unique_value]
-                    self.plots[model][category][unique_value] = self.plots[model][category][unique_value].groupby('Entry')
+                    self.plots[model][category][unique_value] = self.plots[model][category][unique_value].groupby(
+                        'Entry')
         ut.context(str(self.plots))
-
 
     def get_view(self):
         return html.Div([
@@ -100,6 +101,20 @@ class TrendsPageNew(Page):
 
             ], style={'width': '49%', 'display': 'inline-block'}),
 
+            html.Div([
+                dcc.RangeSlider(
+                    id='date_slider',
+                    min=min([int(group) for group in self.plots['Arima']['Gender Key']['Male'].groups]),
+                    max=max([int(group) for group in self.plots['Arima']['Gender Key']['Male'].groups]),
+                    value=[min([int(group) for group in self.plots['Arima']['Gender Key']['Male'].groups]),
+                           max([int(group) for group in self.plots['Arima']['Gender Key']['Male'].groups])],
+                    step=1,
+                    allowCross=False,
+                    marks=self.get_marks([int(group) for group in self.plots['Arima']['Gender Key']['Male'].groups])
+                ),
+
+            ], style={'margin-bottom': '20px', 'margin-left': '20px', 'width': '95%', 'align': 'center'}),
+
             dcc.Graph(id='diversity_trends')
         ])
 
@@ -116,10 +131,11 @@ class TrendsPageNew(Page):
             return [{'label': i, 'value': i} for i in [unique_value for unique_value in
                                                        self.plots[diversity_model[0]][diversity_category[0]]]]
 
-        @app.callback(Output('diversity_trends', 'figure'),[Input('diversity_model', 'value'),
+        @app.callback(Output('diversity_trends', 'figure'), [Input('diversity_model', 'value'),
                                                              Input('diversity_category', 'value'),
-                                                             Input('diversity_unique_value_dropdown', 'value')])
-        def update_trend_graph(diversity_model, diversity_category, diversity_unique_value_dropdown):
+                                                             Input('diversity_unique_value_dropdown', 'value'),
+                                                             Input('date_slider', 'value')])
+        def update_trend_graph(diversity_model, diversity_category, diversity_unique_value_dropdown, date_slider):
             # Set starting variables
             data = []
             current_year = datetime.datetime.now().date().year - 2
@@ -133,6 +149,8 @@ class TrendsPageNew(Page):
                 diversity_category = [diversity_category]
             if type(diversity_unique_value_dropdown) is str:
                 diversity_unique_value_dropdown = [diversity_unique_value_dropdown]
+            if type(date_slider) is str:
+                date_slider = [date_slider]
 
             for model in diversity_model:
                 for category in diversity_category:
@@ -141,20 +159,24 @@ class TrendsPageNew(Page):
                         x = []
                         y = []
                         name = unique_value
-                        has_forcast = False
+                        has_forecast = False
 
                         # Add the x and y, and convert the group nums to y
                         for group in self.plots[model][category][unique_value].groups:
+                            # If the group is not in the range of values, skip
+                            if int(group) not in range(date_slider[0], date_slider[1]):
+                                continue
+
                             x.append(group)
                             y.append(len(self.plots[model][category][unique_value].get_group(group).index))
                             # Add 'missing forecast' if the num of years
                             # is less than expected
-                            if current_year <= int(group): # TODO check
-                                has_forcast = True
+                            if current_year <= int(group):  # TODO check
+                                has_forecast = True
                                 break
 
                         # Adding missing forecast if the has_forecast var is false
-                        name = name + ': Missing forecast' if not has_forcast else name
+                        name = name + ': Missing forecast' if not has_forecast else name
 
                         # Add Scatter plot to data
                         data.append(Scatter(
@@ -169,7 +191,7 @@ class TrendsPageNew(Page):
                         ))
 
                         # skip adding the forecast if there isnt one
-                        if not has_forcast:
+                        if not has_forecast:
                             index = index + 1 if index < len(colors) else 0
                             continue
 
@@ -178,6 +200,10 @@ class TrendsPageNew(Page):
                         y = []
                         # Add the x and y, and convert the group nums to y
                         for group in self.plots[model][category][unique_value].groups:
+                            # If the group is not in the range of values, skip
+                            if int(group) not in range(date_slider[0], date_slider[1]):
+                                continue
+
                             if current_year <= int(group):
                                 x.append(group)
                                 y.append(len(self.plots[model][category][unique_value].get_group(group).index))
@@ -197,6 +223,27 @@ class TrendsPageNew(Page):
             return {
                 'data': data
             }
+
+    def is_future(self, year):
+        if year > datetime.datetime.now().year - 2:
+            return 'rgb(0,250,0)'
+        else:
+            return 'rgb(135,206,250)'
+
+    def get_marks(self, dates=list(), step=2):
+        dates = sorted(dates)
+        year_marks = {}
+        index = 0
+        for year in set(dates):
+            if index % step == 0:
+                year_marks[str(year)] = {'label': str(year), 'style': {'color': 'white', 'width': '30px',
+                                                                       'background-color': self.is_future(year)}}
+            else:
+                year_marks[str(year)] = {'label': '',
+                                         'style': {'color': 'white', 'width': '30px',
+                                                   'background-color': self.is_future(year)}}
+            index += 1
+        return year_marks
 
     def get_page_id(self):
         return 'page__diversity_trends_new'
