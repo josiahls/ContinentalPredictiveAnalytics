@@ -22,7 +22,7 @@ class DiversityModule(Module):
         # Set Pages
         self.pages = []
 
-        self.pages.append(TrendsPage())
+        #self.pages.append(TrendsPage())
         self.pages.append(TrendsPageNew())
 
     def get_view(self):
