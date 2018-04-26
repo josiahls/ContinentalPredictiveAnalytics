@@ -4,10 +4,12 @@ import pandas as pd
 from dash import dash
 from pathlib import Path
 import os
+
 from dash.dependencies import Input, Output
 from core.module import Module
 from modules.diversity_analysis.MapPage import MapPage
 from modules.diversity_analysis.TrendsPage import TrendsPage
+from modules.diversity_analysis.TrendsPageNew import TrendsPageNew
 from util.utility import Utility
 import numpy as np
 
@@ -21,6 +23,7 @@ class DiversityModule(Module):
         self.pages = []
 
         self.pages.append(TrendsPage())
+        self.pages.append(TrendsPageNew())
 
     def get_view(self):
 
