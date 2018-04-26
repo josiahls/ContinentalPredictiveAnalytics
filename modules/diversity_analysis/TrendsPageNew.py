@@ -197,7 +197,7 @@ class TrendsPageNew(Page):
                             connectgaps=True,
                             line=dict(
                                 color=colors[index],
-                                width=2)
+                                width=4)
                         ))
 
                         # skip adding the forecast if there isnt one
@@ -229,7 +229,10 @@ class TrendsPageNew(Page):
                             connectgaps=True,
                             line=dict(
                                 color=colors[index],
-                                width=2)
+                                width=4),
+                            marker= dict(
+                                color=colors[index],
+                                size=11)
                         ))
 
                         index = index + 1 if index < len(colors) else 0
