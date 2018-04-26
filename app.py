@@ -59,6 +59,8 @@ def load_modules():
 ut = Utility('app')
 app = dash.Dash()
 
+server  = app.server
+
 if __name__ == '__main__':
     # Initialize the app dash object
     app = dash.Dash()
