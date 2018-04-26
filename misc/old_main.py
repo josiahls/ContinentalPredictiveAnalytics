@@ -18,7 +18,7 @@ from sklearn.linear_model import LinearRegression
 # Setup app
 
 app = dash.Dash(__name__)
-server = app.servert
+server = app.server
 app.css.append_css({'external_url': 'https://cdn.rawgit.com/VenkateshUV/HRPredictiveAnalysis/1e96b8dc/conti-ui.css'})
 
 mapbox_access_token = 'pk.eyJ1IjoieXBlc3N0IiwiYSI6ImNqYW16cGkydzM5dWczM21odzY2b3BwZTcifQ.AWFR5CO9Buv-pLVZ_HixTw'  # noqa: E501
