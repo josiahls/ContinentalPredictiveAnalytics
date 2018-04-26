@@ -54,7 +54,7 @@ class MapPage(Page):
             elif i == 0:
                 self.master_csv['local'] = pd.DataFrame(self.master_csv[label])
 
-        # ut.context(str(self.master_csv))
+        ut.context(str(self.master_csv))
         pd.DataFrame(self.master_csv['local']).to_csv(self.data_workspace + 'josiah_local.csv')
         self.current_category = 'Gender'
         self.unique_values = {}
