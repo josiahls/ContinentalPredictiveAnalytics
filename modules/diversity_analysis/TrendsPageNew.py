@@ -260,7 +260,7 @@ class TrendsPageNew(Page):
 
 
     def is_future(self, year):
-        if year > datetime.datetime.now().year - 2:
+        if year > datetime.datetime.now().year - 3:
             return 'rgb(254, 165, 1)'
         else:
             return 'rgb(136, 142, 147)'
