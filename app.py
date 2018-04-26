@@ -57,13 +57,13 @@ def load_modules():
 
 # Initialize local fields
 ut = Utility('app')
-app = dash.Dash()
+app = dash.Dash(__name__)
 
 server  = app.server
 
 if __name__ == '__main__':
     # Initialize the app dash object
-    app = dash.Dash()
+    app = dash.Dash(__name__)
 
     # Suppress those stupid callback exceptions
     app.config.supress_callback_exceptions = True
@@ -155,4 +155,4 @@ if __name__ == '__main__':
     # app.css.append_css({"external_url": "https://josiahls.github.io/loading_screen.css"})
     app.css.append_css({"external_url": "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"})
     # app.css.append_css({"external_url": "https://josiahls.github.io/loading_screen.css"})
-    app.server.run(debug=True, threaded=True)
+    app.server.run(debug=True)
