@@ -57,80 +57,80 @@ class TrendsPage(Page):
         return html.Div([
             html.Div([
                 dcc.Dropdown(
-                    id='diversity_model',
+                    id='diversity_model_old',
                     options=[{'label': i, 'value': i} for i in ['Original Data', 'Arima', 'Linear Regression']],
                     multi=True,
                     value='Arima'
                 ),
                 dcc.Dropdown(
-                    id='diversity_category',
+                    id='diversity_category_old',
                     options=[{'label': i, 'value': i} for i in ['Gender Key', 'Employee Subgroup', 'City']],
                     value='Gender Key'
                 ),
                 dcc.Dropdown(
-                    id='diversity_unique_value_dropdown',
+                    id='diversity_unique_value_dropdown_old',
                     options=[{'label': i, 'value': i} for i in [self.master['Arima'][self.category_name].unique()]],
                     multi=True,
                     value=self.master['Arima'][self.category_name].unique()[0]
                 ),
             ], style={'width': '49%', 'display': 'inline-block'}),
 
-            dcc.Graph(id='diversity_trends')
+            dcc.Graph(id='diversity_trends_old')
         ])
 
     def set_callbacks(self, app=dash.Dash()):
-        @app.callback(Output('diversity_unique_value_dropdown', 'options'), [Input('diversity_category', 'value'),
-                                                                             Input('diversity_model', 'value')])
-        def update_graph_dropdown(diversity_category, diversity_model):
-            if type(diversity_model) is str:
-                diversity_model = [diversity_model]
-            self.diversity_models = diversity_model
+        @app.callback(Output('diversity_unique_value_dropdown_old', 'options'), [Input('diversity_category_old', 'value'),
+                                                                             Input('diversity_model_old', 'value')])
+        def update_graph_dropdown(diversity_category_old, diversity_model_old):
+            if type(diversity_model_old) is str:
+                diversity_model_old = [diversity_model_old]
+            self.diversity_models = diversity_model_old
 
-            for model in diversity_model:
-                if diversity_category == 'Gender Key':
+            for model in diversity_model_old:
+                if diversity_category_old == 'Gender Key':
                     self.plots[model] = {}
                     self.master[model] = pd.read_csv(self.data_workspace + self.csv_locations[model][0])
                     self.category_name = 'Gender Key'
-                    ut.context("Plots are: " + str(self.plots) + diversity_category)
+                    ut.context("Plots are: " + str(self.plots) + diversity_category_old)
 
                     for unique_value in self.master[model][self.category_name].unique():
                         self.plots[model][unique_value] = self.master[model][
                             self.master[model][self.category_name] == unique_value]
                         self.plots[model][unique_value] = self.plots[model][unique_value].groupby('Entry')
 
-                    ut.context("Plots are: " + str(self.plots) + diversity_category)
-                elif diversity_category == 'Employee Subgroup':
+                    ut.context("Plots are: " + str(self.plots) + diversity_category_old)
+                elif diversity_category_old == 'Employee Subgroup':
                     self.plots[model] = {}
                     self.master[model] = pd.read_csv(self.data_workspace + self.csv_locations[model][1])
                     self.category_name = 'Employee Subgroup'
-                    ut.context("Plots are: " + str(self.plots) + diversity_category)
+                    ut.context("Plots are: " + str(self.plots) + diversity_category_old)
 
                     for unique_value in self.master[model][self.category_name].unique():
                         self.plots[model][unique_value] = self.master[model][
                             self.master[model][self.category_name] == unique_value]
                         self.plots[model][unique_value] = self.plots[model][unique_value].groupby('Entry')
 
-                    ut.context("Plots are: " + str(self.plots) + diversity_category)
+                    ut.context("Plots are: " + str(self.plots) + diversity_category_old)
 
                 else:
                     self.plots[model] = {}
                     self.master[model] = pd.read_csv(self.data_workspace + self.csv_locations[model][2])
                     self.category_name = 'Personnel city'
-                    ut.context("Plots are: " + str(self.plots) + diversity_category)
+                    ut.context("Plots are: " + str(self.plots) + diversity_category_old)
 
                     for unique_value in self.master[model][self.category_name].unique():
                         self.plots[model][unique_value] = self.master[model][
                             self.master[model][self.category_name] == unique_value]
                         self.plots[model][unique_value] = self.plots[model][unique_value].groupby('Entry')
 
-                    ut.context("Plots are: " + str(self.plots) + diversity_category)
+                    ut.context("Plots are: " + str(self.plots) + diversity_category_old)
 
             return [{'label': value, 'value': value} for value in
-                    self.master[diversity_model[0]][self.category_name].unique()]
+                    self.master[diversity_model_old[0]][self.category_name].unique()]
 
-        @app.callback(Output('diversity_trends', 'figure'), [Input('diversity_unique_value_dropdown', 'value'),
-                                                             Input('diversity_model', 'value')])
-        def update_graph(diversity_unique_value_dropdown, diversity_model):
+        @app.callback(Output('diversity_trends_old', 'figure'), [Input('diversity_unique_value_dropdown_old', 'value'),
+                                                             Input('diversity_model_old', 'value')])
+        def update_graph(diversity_unique_value_dropdown_old, diversity_model_old):
             data = []
             x = []
             y = []
@@ -140,22 +140,22 @@ class TrendsPage(Page):
 
             current_year = datetime.datetime.now().date().year - 2
 
-            if type(diversity_unique_value_dropdown) is str:
-                diversity_unique_value_dropdown = [diversity_unique_value_dropdown]
-            if type(diversity_model) is str:
-                diversity_model = [diversity_model]
+            if type(diversity_unique_value_dropdown_old) is str:
+                diversity_unique_value_dropdown_old = [diversity_unique_value_dropdown_old]
+            if type(diversity_model_old) is str:
+                diversity_model_old = [diversity_model_old]
 
             colors = plotly.colors.DEFAULT_PLOTLY_COLORS
             index = 0
-            for model in diversity_model:
-                for unique_value in diversity_unique_value_dropdown:
+            for model in diversity_model_old:
+                for unique_value in diversity_unique_value_dropdown_old:
                     x = []
                     y = []
-                    ut.context(str(unique_value) + " model: " + str(diversity_model) + " " + str(self.plots))
+                    ut.context(str(unique_value) + " model: " + str(diversity_model_old) + " " + str(self.plots))
 
                     for group in self.plots[model][unique_value].groups:
                         x.append(group)
-                        y.append(self.plots[model][unique_value].get_group(group).size)
+                        y.append(len(self.plots[model][unique_value].get_group(group).index))
                         if current_year <= int(group):
                             has_forecast = True
                             break
@@ -180,7 +180,7 @@ class TrendsPage(Page):
                     for group in self.plots[model][unique_value].groups:
                         if current_year <= int(group):
                             x.append(group)
-                            y.append(self.plots[model][unique_value].get_group(group).size)
+                            y.append(len(self.plots[model][unique_value].get_group(group).index))
 
                     data.append(Scatter(
                         x=x,
@@ -200,7 +200,7 @@ class TrendsPage(Page):
             }
 
     def get_page_id(self):
-        return 'page__diversity_trends'
+        return 'page__diversity_trends_old'
 
     def get_page_name(self):
         return 'Trends'
