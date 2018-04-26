@@ -30,7 +30,8 @@ class DiversityModule(Module):
         # Set the tabs array
         tabs = []
         for page in self.pages:
-            tabs.append({'label': page.get_page_name(), 'value': page.get_page_id()})
+            tabs.append({'label': page.get_page_name(), 'value': page.get_page_id(),
+                         'style': {'color': 'rgb(254, 165, 1)'}})
             ut.context(tabs.__str__())
 
         return html.Div([
@@ -40,7 +41,6 @@ class DiversityModule(Module):
                         tabs=tabs,
                         value=tabs[0].get('value'),
                         id='module_diversity_tabs',
-
                     ),
                 ],
                 style={
@@ -55,12 +55,12 @@ class DiversityModule(Module):
             ),
             html.Div(
                 html.Div(id='tab_module_diversity_output'),
-                style={'width': '100%', 'float': 'right'}
+                style={'width': '100%', 'float': 'right' ,'color': 'black','background-color': 'rgb(0, 0, 0)'}
             )
-        ])
+        ], style={'color': 'black','background-color': 'rgb(0, 0, 0)'})
 
     def get_module_name(self):
-        return "Time to Hire"
+        return "Hiring Forecast"
 
     def get_tab_value(self):
         return "tab_diversity"

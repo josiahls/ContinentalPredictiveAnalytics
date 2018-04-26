@@ -83,7 +83,7 @@ class MapPage(Page):
         return html.Div([
             html.Div([
                 html.Div([
-                    html.H3('Categories'),
+                    html.H3('Categories', style={'color': 'rgb(254, 165, 1)'}),
                     dcc.Dropdown(
                         id='category_dropdown',
                         options=[{'label': i, 'value': i} for i in self.categories],
@@ -94,7 +94,7 @@ class MapPage(Page):
 
                 html.Div([
 
-                    html.H3('Values'),
+                    html.H3('Values', style={'color': 'rgb(254, 165, 1)'}),
                     dcc.Dropdown(
                         id='unique_value_dropdown',
                         options=[{'label': i, 'value': i} for i in self.unique_values[self.categories[2]]],
@@ -109,7 +109,7 @@ class MapPage(Page):
             self.range_slider.get_view(),
             dcc.Graph(id='attrition_map_graph', figure=self.unitedStatesMapView.get_view()),
 
-        ])
+        ], style={'width': '100%','color':'black', 'display': 'inline-block', })
 
     def set_callbacks(self, app=dash.Dash()):
         for view in self.views:
