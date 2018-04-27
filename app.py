@@ -60,99 +60,101 @@ ut = Utility('app')
 app = dash.Dash(__name__)
 app.css.append_css({"external_url": "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"})
 server  = app.server
+server.secret_key = os.environ.get('SECRET_KEY', 'my-secret-key')
 
-if __name__ == '__main__':
-    # Initialize the app dash object
-    #app = dash.Dash(__name__)
 
-    # Suppress those stupid callback exceptions
-    app.config.supress_callback_exceptions = True
+# Initialize the app dash object
+#app = dash.Dash(__name__)
 
-    # Initialize modules
-    load_modules()
+# Suppress those stupid callback exceptions
+app.config.supress_callback_exceptions = True
 
-    # Set the tabs array
-    tabs = []
-    for analysis_module in LIST_OF_MODULE_INSTANCES:
-        tabs.append({'label': analysis_module.get_module_name(), 'value': analysis_module.get_tab_value()})
-        ut.context(tabs.__str__())
+# Initialize modules
+load_modules()
 
-    # Set the layout from the modules
-    app_colors = {
-        'background': '#0C0F0A',
-        'text': '#FFFFFF',
-        'sentiment-plot': '#41EAD4',
-        'volume-bar': '#FBFC74',
-        'someothercolor': '#FF206E',
-    }
+# Set the tabs array
+tabs = []
+for analysis_module in LIST_OF_MODULE_INSTANCES:
+    tabs.append({'label': analysis_module.get_module_name(), 'value': analysis_module.get_tab_value()})
+    ut.context(tabs.__str__())
 
-    app.layout = html.Div([
-        html.Div(
-            [
-                html.Img(
-                    src="http://www.continentaltire.com/sites/all/themes/continental/assets/images/print-logo.jpg",
-                    className='one columns',
-                    style={
-                        'height': '100',
-                        'width': '250',
-                        'float': 'left',
-                        'position': 'relative',
-                    },
-                ),
-                html.H1(
-                    'HR Predictive Analysis',
-                    # className='eight columns',
-                    className='p-3 mb-2',
-                    style={'text-align': 'center', 'padding': '15px', 'height': '100',
-                           'background-color': 'rgb(0, 0, 0)', 'color': 'rgb(254, 165, 1)'},
-                ),
-            ], style={'height': '100', 'width': '100%','color': 'black', 'background-color': 'rgb(0, 0, 0)'},
-        ),
+# Set the layout from the modules
+app_colors = {
+    'background': '#0C0F0A',
+    'text': '#FFFFFF',
+    'sentiment-plot': '#41EAD4',
+    'volume-bar': '#FBFC74',
+    'someothercolor': '#FF206E',
+}
 
-        html.Div(
-            [
-                dcc.Tabs(
-                    tabs=tabs,
-                    value=tabs[1].get('value'),
-                    id='tabs',
+app.layout = html.Div([
+    html.Div(
+        [
+            html.Img(
+                src="http://www.continentaltire.com/sites/all/themes/continental/assets/images/print-logo.jpg",
+                className='one columns',
+                style={
+                    'height': '100',
+                    'width': '250',
+                    'float': 'left',
+                    'position': 'relative',
+                },
+            ),
+            html.H1(
+                'HR Predictive Analysis',
+                # className='eight columns',
+                className='p-3 mb-2',
+                style={'text-align': 'center', 'padding': '15px', 'height': '100',
+                       'background-color': 'rgb(0, 0, 0)', 'color': 'rgb(254, 165, 1)'},
+            ),
+        ], style={'height': '100', 'width': '100%','color': 'black', 'background-color': 'rgb(0, 0, 0)'},
+    ),
 
-                ),
-            ],
-            style={
-                'width': '100%',
-                'fontFamily': 'Sans-Serif',
-                'color': 'black',
-                'background-color': 'black',
-                'margin-left': 'auto',
-                'margin-right': 'auto',
-            },
+    html.Div(
+        [
+            dcc.Tabs(
+                tabs=tabs,
+                value=tabs[1].get('value'),
+                id='tabs',
 
-        ),
+            ),
+        ],
+        style={
+            'width': '100%',
+            'fontFamily': 'Sans-Serif',
+            'color': 'black',
+            'background-color': 'black',
+            'margin-left': 'auto',
+            'margin-right': 'auto',
+        },
 
-        html.Div(
-            html.Div(id='tab-output'),
-            style={'width': '100%', 'float': 'right','color': 'black', 'background-color': 'rgb(0, 0, 0)'}
-        )
+    ),
 
-    ], style={'width': '100%', 'float': 'right', 'color': 'black','background-color': 'rgb(0, 0, 0)'}
-
+    html.Div(
+        html.Div(id='tab-output'),
+        style={'width': '100%', 'float': 'right','color': 'black', 'background-color': 'rgb(0, 0, 0)'}
     )
 
+], style={'width': '100%', 'float': 'right', 'color': 'black','background-color': 'rgb(0, 0, 0)'}
 
-    @app.callback(Output('tab-output', 'children'), [Input('tabs', 'value')])
-    def display_content(tabs):
-        ut.context("Callback executing")
-        for analysis_module in LIST_OF_MODULE_INSTANCES:
-            if analysis_module.get_tab_value() == tabs:
-                return analysis_module.get_view()
+)
 
 
-    # Add other callbacks
+@app.callback(Output('tab-output', 'children'), [Input('tabs', 'value')])
+def display_content(tabs):
+    ut.context("Callback executing")
     for analysis_module in LIST_OF_MODULE_INSTANCES:
-        analysis_module.set_callback_function(app=app)
+        if analysis_module.get_tab_value() == tabs:
+            return analysis_module.get_view()
 
-    # Loading screen CSS
-    # app.css.append_css({"external_url": "https://josiahls.github.io/loading_screen.css"})
-    #app.css.append_css({"external_url": "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"})
-    # app.css.append_css({"external_url": "https://josiahls.github.io/loading_screen.css"})
+
+# Add other callbacks
+for analysis_module in LIST_OF_MODULE_INSTANCES:
+    analysis_module.set_callback_function(app=app)
+
+# Loading screen CSS
+# app.css.append_css({"external_url": "https://josiahls.github.io/loading_screen.css"})
+#app.css.append_css({"external_url": "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"})
+# app.css.append_css({"external_url": "https://josiahls.github.io/loading_screen.css"})
+if __name__ == '__main__':
     app.server.run(debug=True)
